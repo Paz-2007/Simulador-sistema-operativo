@@ -3,7 +3,7 @@ export class Proceso {
     private _tamanoMemoria: number = 0;
     private _tiempoCpuTotal: number = 0;
     private _tiempoCpuRestante: number = 0;
-    private _estado: string = "NUEVO";
+    private _estado: string = "Nuevo";
     private _quantumConsumido: number = 0;
     private _tiempoBloqueoRestante: number = 0;
 
