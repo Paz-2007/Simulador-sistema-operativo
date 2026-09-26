@@ -37,5 +37,23 @@ export class Proceso {
         return this._quantumConsumido;
     }
 
-    
+    get tiempoBloqueoRestante(): number {
+        return this._tiempoBloqueoRestante;
+    }
+
+    set estado(nuevoEstado: string) {
+        this._estado = nuevoEstado;
+    }
+
+    set tiempoCpuRestante(tiempo: number) {
+        this._tiempoCpuRestante = tiempo;
+    }
+
+    set quantumConsumido(quantum: number) {
+        this._quantumConsumido = quantum;
+    }
+
+    set tiempoBloqueoRestante(tiempo: number) {
+        this._tiempoBloqueoRestante = tiempo;
+    }
 }
