@@ -13,4 +13,29 @@ export class Proceso {
         this._tiempoCpuTotal = tiempoCpuTotal;
         this._tiempoCpuRestante = tiempoCpuTotal;
     }
+    get pid(): string {
+        return this._pid;
+    }
+
+    get tamanoMemoria(): number {
+        return this._tamanoMemoria;
+    }
+
+    get tiempoCpuTotal(): number {
+        return this._tiempoCpuTotal;
+    }
+
+    get tiempoCpuRestante(): number {
+        return this._tiempoCpuRestante;
+    }
+
+    get estado(): string {
+        return this._estado;
+    }
+
+    get quantumConsumido(): number {
+        return this._quantumConsumido;
+    }
+
+    
 }
