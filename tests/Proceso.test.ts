@@ -9,7 +9,7 @@ describe("Proceso",()=> {
         expect(proceso.tamanoMemoria).toBe(200);
         expect(proceso.tiempoCpuTotal).toBe(4);
         expect(proceso.tiempoCpuRestante).toBe(4);
-        expect(proceso.estado).toBe("Nuevo");
+        expect(proceso.estado).toBe("NUEVO");
         expect(proceso.quantumConsumido).toBe(0);
         expect(proceso.tiempoBloqueoRestante).toBe(0);
 
