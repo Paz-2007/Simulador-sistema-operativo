@@ -1,18 +1,26 @@
 export class Proceso {
-    private _pid: string = "";
-    private _tamanoMemoria: number = 0;
-    private _tiempoCpuTotal: number = 0;
-    private _tiempoCpuRestante: number = 0;
-    private _estado: string = "Nuevo";
-    private _quantumConsumido: number = 0;
-    private _tiempoBloqueoRestante: number = 0;
+    private _pid: string;
+    private _tamanoMemoria: number;
+    private _tiempoCpuTotal: number;
+    private _tiempoCpuRestante: number;
+    private _estado: string;
+    private _quantumConsumido: number;
+    private _tiempoBloqueoRestante: number;
 
-    constructor(pid: string, tamanoMemoria: number, tiempoCpuTotal: number) {
+    constructor(
+        pid: string,
+        tamanoMemoria: number,
+        tiempoCpuTotal: number
+    ) {
         this._pid = pid;
         this._tamanoMemoria = tamanoMemoria;
         this._tiempoCpuTotal = tiempoCpuTotal;
         this._tiempoCpuRestante = tiempoCpuTotal;
+        this._estado = "NUEVO";
+        this._quantumConsumido = 0;
+        this._tiempoBloqueoRestante = 0;
     }
+
     get pid(): string {
         return this._pid;
     }
@@ -41,19 +49,19 @@ export class Proceso {
         return this._tiempoBloqueoRestante;
     }
 
-    set estado(nuevoEstado: string) {
-        this._estado = nuevoEstado;
+    set estado(valor: string) {
+        this._estado = valor;
     }
 
-    set tiempoCpuRestante(tiempo: number) {
-        this._tiempoCpuRestante = tiempo;
+    set tiempoCpuRestante(valor: number) {
+        this._tiempoCpuRestante = valor;
     }
 
-    set quantumConsumido(quantum: number) {
-        this._quantumConsumido = quantum;
+    set quantumConsumido(valor: number) {
+        this._quantumConsumido = valor;
     }
 
-    set tiempoBloqueoRestante(tiempo: number) {
-        this._tiempoBloqueoRestante = tiempo;
+    set tiempoBloqueoRestante(valor: number) {
+        this._tiempoBloqueoRestante = valor;
     }
 }

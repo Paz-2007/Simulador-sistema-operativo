@@ -16,4 +16,31 @@ export class BloqueMemoria {
         this._pid = pid;
     }
 
+    get inicio(): number {
+        return this._inicio;
+    }
+
+    get tamano(): number {
+        return this._tamano;
+    }
+
+    get libre(): boolean {
+        return this._libre;
+    }
+
+    get pid(): string | null {
+        return this._pid;
+    }
+
+    set tamano(valor: number) {
+        this._tamano = valor;
+    }
+
+    set libre(valor: boolean) {
+        this._libre = valor;
+    }
+
+    set pid(valor: string | null) {
+        this._pid = valor;
+    }
 }
