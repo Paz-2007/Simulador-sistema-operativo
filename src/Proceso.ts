@@ -58,4 +58,20 @@ export class Proceso {
     reiniciarQuantum(): void {
         this._quantumConsumido = 0:
     }
+
+    bloquear(ticks: number): void {
+        if (ticks<=0 || !Number.isInteger(ticks)) {
+            throw new Error("Proceso bloqueado");
+            
+        }
+        this._estado = "Bloqueado"; 
+        this._tiempoBloqueoRestante = ticks;
+        //si el tick es 0 o el numero tiene decimales se bloquea el programa
+    }
+
+    actualizarBloqueo(): void {
+        if (this._tiempoBloqueoRestante > 0) {
+            this._tiempoBloqueoRestante -= 1;
+        }
+    }
 }
