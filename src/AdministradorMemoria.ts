@@ -1,7 +1,10 @@
 import {BloqueMemoria} from "./BloqueMemoria"
-import {Proceso} from "./Proceso"
 
-export class AdministradorMemoria {
+export interface IAdministradorMemoria {readonly memoriaTotal: number;
+}
+
+
+export class AdministradorMemoria implements IAdministradorMemoria{
     private _memoriaTotal: number = 0;
     private _bloques: BloqueMemoria[] = [];
 
