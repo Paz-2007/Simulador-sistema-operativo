@@ -3,7 +3,7 @@ export interface IProceso {
     readonly estado: string;
 }
 
-export class Proceso implements Iproceso {
+export class Proceso implements IProceso {
     private _pid: string;
     private _tamanoMemoria: number;
     private _tiempoCpuTotal: number;
