@@ -99,6 +99,18 @@ describe("AdministradorMemoria", () => {
         expect(memoria.mayorBloqueLibre()).toBe(500);
     });
 
+    it("Debe calcular la ocupación porcentual", () => {
+        const memoria =new AdministradorMemoria(1000);
+
+        memoria.asignar("P1", 250);
+
+        expect(memoria.porcentajeOcupacion()).toBe(25);
+    });
+
+    
+
+    
+
 
 
 
