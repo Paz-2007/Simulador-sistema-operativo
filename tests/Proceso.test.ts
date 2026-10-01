@@ -61,5 +61,9 @@ describe("Proceso",()=> {
             .toBe(1);
     });
 
-
+    it("Debe rechazar CPU invalida", () =>{
+        expect(
+            ()=> new Proceso("P1", 200, 0)
+        ).toThrow();
+    });
 });
