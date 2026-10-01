@@ -100,14 +100,27 @@ describe("AdministradorMemoria", () => {
     });
 
     it("Debe calcular la ocupación porcentual", () => {
-        const memoria =new AdministradorMemoria(1000);
+        const memoria = new AdministradorMemoria(1000);
 
         memoria.asignar("P1", 250);
 
         expect(memoria.porcentajeOcupacion()).toBe(25);
     });
 
-    
+     it("Debe calcular fragmentación externa", () => {
+        const memoria = new AdministradorMemoria(1000);
+
+        memoria.asignar("P1", 200);
+        memoria.asignar("P2", 200);
+        memoria.asignar("P3", 200);
+
+        memoria.liberar("P1");
+        memoria.liberar("P2");
+
+        expect(memoria.fragmentacionExterna()).toBe(50);
+    });
+
+
 
     
 
