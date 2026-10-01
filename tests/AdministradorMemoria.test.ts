@@ -88,6 +88,21 @@ describe("AdministradorMemoria", () => {
         expect(memoria.memoriaOcupada()).toBe(500);
     });
 
+    it("Debe calcular el mayor bloque libre", () => {
+        const memoria =new AdministradorMemoria(1000);
+
+        memoria.asignar("P1", 300);
+        memoria.asignar("P2", 200);
+
+        memoria.liberar("P1");
+
+        expect(memoria.mayorBloqueLibre()).toBe(500);
+    });
+
+
+
+
+
 
    
 
