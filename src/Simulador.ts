@@ -4,7 +4,6 @@ import { BloqueMemoria } from "./BloqueMemoria";
 
 export interface ISimulador {
     readonly quantum: number;
-    tick(): void;
 }
 
 export class Simulador implements ISimulador {
@@ -101,41 +100,29 @@ get memoriaTotal(): number {
         return this._memoria.bloques;
     }
 
-    registrarProceso(
-        proceso: Proceso
-    ): void {
-        const existe =
-            this._procesos.some(
-                procesoExistente =>
-                    procesoExistente.pid ===
-                    proceso.pid
-            );
+    registrarProceso(proceso: Proceso): void {
+        const existe =this._procesos.some(procesoExistente =>procesoExistente.pid === proceso.pid);
+        //se verifica si el proceso ya existe en el arreglo de procesos
 
         if (existe) {
-            throw new Error(
-                "El PID ya existe"
-            );
+            throw new Error("El PID ya existe");
         }
 
-        if (
-            proceso.tamanoMemoria >
-            this._memoria.memoriaTotal
-        ) {
-            throw new Error(
-                "El proceso requiere más memoria que la disponible"
-            );
-        }
+        if (proceso.tamanoMemoria >this._memoria.memoriaTotal
+        ) {throw new Error("El proceso requiere más memoria que la disponible");
+
+        } //si el tamano de memoria del proceso es mayor que la memoria total se lanza error
 
         this._procesos.push(proceso);
+        //se agrega el proceso al arreglo de procesos
 
-        proceso.cambiarEstado(
-            "Esperando Memoria"
-        );
+        proceso.cambiarEstado("Esperando Memoria");
 
-        this._esperandoMemoria.push(
-            proceso
-        );
+        this._esperandoMemoria.push(proceso);
+        //se agrega el proceso al arreglo de procesos esperando memoria
     }
+
+   
 
 
 
