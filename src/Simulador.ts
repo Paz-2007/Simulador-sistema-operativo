@@ -55,4 +55,27 @@ export class Simulador {
         // y cambios de contexto y el proceso en nulo
 
 }
+
+get memoriaTotal(): number {
+        return this._memoria.memoriaTotal;
+    }
+
+    get quantum(): number {
+        return this._quantum;
+    }
+
+    get tickActual(): number {
+        return this._tickActual;
+    }
+
+    get ejecutando(): Proceso | null {
+        return this._ejecutando;
+    }
+
+    get esperandoMemoria(): Proceso[] {
+        return [...this._esperandoMemoria];
+    }
+
+    
+
 }
