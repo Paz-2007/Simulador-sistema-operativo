@@ -39,6 +39,20 @@ export class Simulador {
 
         this._procesos = new Map();
         // se crea un mapa para almacenar los procesos por su pid
-    }
 
+        this._esperandoMemoria=[];
+        this._listos=[];
+        this._bloqueados=[];
+        this._terminados=[];
+        //se crean arreglos para almacenar los procesos 
+        // en diferentes estados
+
+        this._ejecutando=null;
+        this._tickActual=0;
+        this._ticksCPUOcupada=0;
+        this._cambiosContexto=0;
+        // se inicializan los contadores de ticks 
+        // y cambios de contexto y el proceso en nulo
+
+}
 }
