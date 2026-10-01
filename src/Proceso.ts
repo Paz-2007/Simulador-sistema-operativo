@@ -1,4 +1,9 @@
-export class Proceso {
+export interface IProceso {
+    readonly pid: string;
+    readonly estado: string;
+}
+
+export class Proceso implements Iproceso {
     private _pid: string;
     private _tamanoMemoria: number;
     private _tiempoCpuTotal: number;
