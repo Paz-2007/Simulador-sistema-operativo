@@ -76,6 +76,27 @@ get memoriaTotal(): number {
         return [...this._esperandoMemoria];
     }
 
-    
+    get listos(): Proceso[] {
+        return [...this._listos];
+    }
+
+    get bloqueados(): Proceso[] {
+        return [...this._bloqueados];
+    }
+
+    get terminados(): Proceso[] {
+        return [...this._terminados];
+    }
+
+    get cambiosContexto(): number {
+        return this._cambiosContexto;
+    }
+
+    get bloquesMemoria(): BloqueMemoria[] {
+        return this._memoria.bloques;
+    }
+
+
+
 
 }
