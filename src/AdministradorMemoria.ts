@@ -101,6 +101,14 @@ export class AdministradorMemoria {
                 //se retorna la memoria ocupada
     }
 
+    memoriaLibre(): number {
+        return this._memoriaTotal - this.memoriaOcupada();
+    } //se calcula la memoria libre restando la memoria ocupada a la memoria total
+
+    porcentajeOcupacion(): number {
+        return (this.memoriaOcupada() /this._memoriaTotal) * 100;
+    } //se calcla el porcentaje de ocupacion dividiendo la memoria ocupada entre la memoria total y multiplicando por 100
+
 
 
 }
