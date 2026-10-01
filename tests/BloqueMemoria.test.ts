@@ -35,9 +35,7 @@ describe("BloqueMemoria", () => {
 
         bloque.ocupar("P1");
 
-        expect(
-            () => bloque.ocupar("P2")
-        ).toThrow();
+        expect(() => bloque.ocupar("P2")).toThrow();
     });
 
 
