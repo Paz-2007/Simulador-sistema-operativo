@@ -53,4 +53,29 @@ export class AdministradorMemoria {
         //se retorna true indicando que la memoria se pudo asignar al proceso
     
     } 
+
+   private coalescer(): void {
+        let indice = 0;
+
+        while (indice < this._bloques.length - 1) {
+            const actual = this._bloques[indice];
+            const siguiente = this._bloques[indice + 1];
+            //si el bloque actual y el siguiente son libres, se combinan en un solo bloque
+
+            if (actual.libre && siguiente.libre) {
+                const nuevo = new BloqueMemoria(actual.inicio,actual.tamano + siguiente.tamano
+                ); //se crea un nuevo bloque con el inicio del bloque actual 
+                //y el tamano de la suma de los dos bloques libres
+
+                this._bloques.splice(indice,2,nuevo); //se reemplazan los dos bloques libres por el nuevo bloque combinado
+            } else {
+                indice += 1;
+            } //si no se pueden combinar se pasa al siguiente bloque
+            //se incrementa el indice para seguir con la iteracion
+            //y verificar el siguiente bloque
+        }
+    }
+
+
+
 }
