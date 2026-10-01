@@ -76,6 +76,24 @@ export class AdministradorMemoria {
         }
     }
 
+     liberar(pid: string): boolean {
+        const indice = this._bloques.findIndex(
+            bloque => !bloque.libre && bloque.pid === pid
+        ); //se busca el indice del bloque ocupado con el pid especificado
+
+        if (indice === -1) {
+            return false;
+        } //si no se encuentra un bloque ocupado con el pid especificado se retorna false
+        // indicando que no se pudo liberar la memoria
+
+        this._bloques[indice].liberar(); 
+        //si se encuentra un bloque ocupado con el pid especificado se libera la memoria
+
+        this.coalescer(); //el metodo coalescer combina los bloques libres adyacentes
+
+        return true;
+    }
+
 
 
 }
