@@ -4,16 +4,11 @@ export class BloqueMemoria {
     private _libre: boolean;
     private _pid: string | null;
 
-    constructor(
-        inicio: number,
-        tamano: number,
-        libre: boolean = true,
-        pid: string | null = null
-    ) {
-        this._inicio = inicio;
-        this._tamano = tamano;
-        this._libre = libre;
-        this._pid = pid;
+    constructor(inicio: number, tamano:number){
+        this._inicio=inicio;
+        this._tamano=tamano;
+        this._libre=true;
+        this._pid=null
     }
 
     get inicio(): number {
@@ -32,17 +27,19 @@ export class BloqueMemoria {
         return this._pid;
     }
 
-    set tamano(valor: number) {
-        this._tamano = valor;
+    ocupar(pid:string): void{
+        if (!this._libre){
+            throw new Error("El bloque ya esta ocupado");}
+            this._libre=false;
+            this._pid=pid;
+            //si el bloque no esta libre se lanza error, 
+            // si esta libre se ocupa y se asigna el pid 
+            // del proceso que lo ocupa
     }
 
-    set libre(valor: boolean) {
-        this._libre = valor;
+    liberar(): void{
+        this._libre=true;
+        this._pid=null;
     }
 
-    set pid(valor: string | null) {
-        this._pid = valor;
-    }
-
-    
 }
