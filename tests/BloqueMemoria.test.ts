@@ -12,5 +12,35 @@ describe("BloqueMemoria", () => {
         expect(bloque.pid).toBe(null);
     });
 
+    it("Debe ocupar un bloque", () => {
+        const bloque = new BloqueMemoria(0,200);
+        bloque.ocupar("P1");
+
+        expect(bloque.libre).toBe(false);
+        expect(bloque.pid).toBe("P1");
+    });
+
+     it("Debe liberar un bloque", () => {
+        const bloque = new BloqueMemoria(0, 200);
+
+        bloque.ocupar("P1");
+        bloque.liberar();
+
+        expect(bloque.libre).toBe(true);
+        expect(bloque.pid).toBeNull();
+    });
+
+    it("No debe permitir ocupar dos veces el mismo bloque", () => {
+        const bloque = new BloqueMemoria(0, 200);
+
+        bloque.ocupar("P1");
+
+        expect(
+            () => bloque.ocupar("P2")
+        ).toThrow();
+    });
+
+
+
    
 });
