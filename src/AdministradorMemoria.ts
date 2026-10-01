@@ -109,6 +109,31 @@ export class AdministradorMemoria {
         return (this.memoriaOcupada() /this._memoriaTotal) * 100;
     } //se calcla el porcentaje de ocupacion dividiendo la memoria ocupada entre la memoria total y multiplicando por 100
 
+    mayorBloqueLibre(): number { 
+        return this._bloques.filter(bloque => bloque.libre)
+        .reduce((mayor, bloque) => 
+            // se filtran los bloques libres y se busca el bloque con el mayor tamano usando reduce
+                    Math.max(mayor, bloque.tamano),
+                    //se retorna el tamano del mayor bloque libre
+                0 //si no hay bloques libres se retorna 0
+            );
+    } 
+
+    fragmentacionExterna(): number {
+        const libre = this.memoriaLibre();
+
+        if (libre === 0) { 
+            return 0;
+            //si no hay memoria libres se retorna 0 
+            // que indica que no hay fragmentacion externa
+        }
+
+        return (1 -this.mayorBloqueLibre() / libre
+        ) * 100;
+        //si hay meoria libre se calcula la fragmentacion 
+        // externa dividiendo el tamano del mayor bloque
+        // libre entre la memoria libre total y restando el resultado a 1
+    }
 
 
 }
