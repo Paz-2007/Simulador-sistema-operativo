@@ -37,6 +37,36 @@ describe("AdministradorMemoria", () => {
         expect(memoria.bloques[1].tamano).toBe(700);
     });
 
+     it("Debe liberar memoria", () => {
+        const memoria =new AdministradorMemoria(500);
+
+        memoria.asignar("P1", 200);
+        memoria.liberar("P1");
+
+        expect(memoria.memoriaLibre()).toBe(500);
+        expect(memoria.bloques.length).toBe(1);
+    });
+
+    it("Debe calcular memoria libre", () => {
+        const memoria =new AdministradorMemoria(1000);
+
+        memoria.asignar("P1", 300);
+
+        expect(memoria.memoriaLibre()).toBe(700);
+    });
+
+    it("Debe rechazar una asignación si no existe un bloque suficiente", () => {
+        const memoria =new AdministradorMemoria(500);
+        
+        memoria.asignar("P1", 300);
+
+        expect(memoria.asignar("P2", 250)).toBe(false);
+    });
+
+
+
+
+
 
 
 });
