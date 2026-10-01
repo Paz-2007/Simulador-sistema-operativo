@@ -7,7 +7,7 @@ describe("Proceso",()=> {
         const proceso = new Proceso("P1",200,4);
 
         expect(proceso.pid).toBe("P1");
-        
+
         expect(proceso.tamanoMemoria).toBe(200);
         expect(proceso.tiempoCpuTotal).toBe(4);
         expect(proceso.tiempoCpuRestante).toBe(4);
@@ -17,5 +17,18 @@ describe("Proceso",()=> {
 
     })
 
+    it("debe consumir un tick de CPU", () => {
+
+        const proceso =
+            new Proceso("P1", 200, 4);
+
+        proceso.consumirCpu();
+
+        expect(proceso.tiempoCpuRestante)
+            .toBe(3);
+
+        expect(proceso.quantumConsumido)
+            .toBe(1);
+    });
 
 });
