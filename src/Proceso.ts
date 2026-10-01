@@ -8,6 +8,13 @@ export class Proceso {
     private _tiempoBloqueoRestante: number;
 
     constructor( pid: string, tamanoMemoria: number, tiempoCpuTotal: number ) {
+        if(tiempoCpuTotal <= 0 || !Number.isInteger(tiempoCpuTotal)) {
+            throw new Error("Tiempo de cpu invalido");
+            //si el tiempo de cpu es 0 o el numero 
+            // no es entero se lanza error
+        }
+        
+        
         this._pid = pid;
         this._tamanoMemoria = tamanoMemoria;
         this._tiempoCpuTotal = tiempoCpuTotal;
@@ -73,6 +80,6 @@ export class Proceso {
     actualizarBloqueo(): void {
         if (this._tiempoBloqueoRestante > 0) {
             this._tiempoBloqueoRestante -= 1;
-        }
+        } //si el tiempo de bloqueo es mayor a 0 se le resta 1 
     }
 }

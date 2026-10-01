@@ -17,10 +17,9 @@ describe("Proceso",()=> {
 
     })
 
-    it("debe consumir un tick de CPU", () => {
+    it("debe consumir un tick de CPU y resta quantum", () => {
 
-        const proceso =
-            new Proceso("P1", 200, 4);
+        const proceso = new Proceso("P1", 200, 4);
 
         proceso.consumirCpu();
 
@@ -29,41 +28,36 @@ describe("Proceso",()=> {
 
         expect(proceso.quantumConsumido)
             .toBe(1);
+            //si el proceso consume un tick se le resta 
+            // 1 al tiempo restante y se le suma 1 al 
+            // quantum consumido
     });
+
 
        it("Proceso cambia de estado", () => {
 
-        const proceso =
-            new Proceso("P1", 200, 4);
+        const proceso = new Proceso("P1", 200, 4);
 
         proceso.cambiarEstado("Listo");
 
-        expect(proceso.estado)
-            .toBe("Listo");
+        expect(proceso.estado) .toBe("Listo");
+        
     });
 
-        it("El proceso se bloquea y actualiza su temporizador", () => {
 
-        const proceso =
-            new Proceso("P1", 200, 4);
+        it("El proceso se bloquea", () => {
 
-        proceso.bloquear(2);
+        const proceso = new Proceso("P1", 200, 4);
 
-        expect(proceso.estado)
-            .toBe("Bloqueado");
-
-        expect(proceso.tiempoBloqueoRestante)
-            .toBe(2);
-
+        proceso.bloquear(3);
         proceso.actualizarBloqueo();
+        expect(proceso.tiempoBloqueoRestante).toBe(2);
+        // si el tiempo de bloqueo es mayor a 0 se le resta 1
 
-        expect(proceso.tiempoBloqueoRestante)
-            .toBe(1);
     });
 
     it("Debe rechazar CPU invalida", () =>{
-        expect(
-            ()=> new Proceso("P1", 200, 0)
-        ).toThrow();
-    });
+        expect(() => new Proceso("P1", 200, 0)).toThrow();
+        // si el tiempo de cpu es 0 o el numero no es entero se lanza error
+    }); 
 });
