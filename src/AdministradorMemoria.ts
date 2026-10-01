@@ -94,6 +94,13 @@ export class AdministradorMemoria {
         return true;
     }
 
+    memoriaOcupada(): number { //se calcula la memoria ocupada sumando el tamano de los bloques ocupados
+        return this._bloques.filter(bloque => !bloque.libre).reduce( 
+            // se filtran los bloques ocupados y se suman los tamanos usando reduce
+                (total, bloque) => total + bloque.tamano,0);
+                //se retorna la memoria ocupada
+    }
+
 
 
 }
