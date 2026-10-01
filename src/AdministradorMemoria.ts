@@ -1,6 +1,7 @@
 import {BloqueMemoria} from "./BloqueMemoria"
 
-export interface IAdministradorMemoria {readonly memoriaTotal: number;
+export interface IAdministradorMemoria {
+    readonly memoriaTotal: number;
 }
 
 

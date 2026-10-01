@@ -2,11 +2,16 @@ import { Proceso } from "./Proceso";
 import { AdministradorMemoria } from "./AdministradorMemoria";
 import { BloqueMemoria } from "./BloqueMemoria";
 
-export class Simulador {
+export interface ISimulador {
+    readonly quantum: number;
+    tick(): void;
+}
+
+export class Simulador implements ISimulador {
     private _memoria: AdministradorMemoria;
     private _quantum: number;
 
-    private _procesos: Map<string, Proceso>;
+    private _procesos: Proceso[];
 
     private _esperandoMemoria: Proceso[];
     private _listos: Proceso[];
@@ -37,7 +42,7 @@ export class Simulador {
         this._quantum = quantum;
         //se asigna el quantum especificado
 
-        this._procesos = new Map();
+        this._procesos = [];
         // se crea un mapa para almacenar los procesos por su pid
 
         this._esperandoMemoria=[];
@@ -95,6 +100,43 @@ get memoriaTotal(): number {
     get bloquesMemoria(): BloqueMemoria[] {
         return this._memoria.bloques;
     }
+
+    registrarProceso(
+        proceso: Proceso
+    ): void {
+        const existe =
+            this._procesos.some(
+                procesoExistente =>
+                    procesoExistente.pid ===
+                    proceso.pid
+            );
+
+        if (existe) {
+            throw new Error(
+                "El PID ya existe"
+            );
+        }
+
+        if (
+            proceso.tamanoMemoria >
+            this._memoria.memoriaTotal
+        ) {
+            throw new Error(
+                "El proceso requiere más memoria que la disponible"
+            );
+        }
+
+        this._procesos.push(proceso);
+
+        proceso.cambiarEstado(
+            "Esperando Memoria"
+        );
+
+        this._esperandoMemoria.push(
+            proceso
+        );
+    }
+
 
 
 

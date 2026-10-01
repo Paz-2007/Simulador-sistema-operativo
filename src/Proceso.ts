@@ -12,6 +12,10 @@ export class Proceso implements IProceso {
     private _quantumConsumido: number;
     private _tiempoBloqueoRestante: number;
 
+    private _ticksCpuConsumidos: number;
+    private _ticksParaBloqueo: number;
+    private _duracionBloqueo: number;
+
     constructor( pid: string, tamanoMemoria: number, tiempoCpuTotal: number ) {
         if(tiempoCpuTotal <= 0 || !Number.isInteger(tiempoCpuTotal)) {
             throw new Error("Tiempo de cpu invalido");
@@ -28,7 +32,9 @@ export class Proceso implements IProceso {
         this._quantumConsumido = 0;
         this._tiempoBloqueoRestante = 0;
 
-       
+       this._ticksCpuConsumidos = 0;
+        this._ticksParaBloqueo = 0;
+        this._duracionBloqueo = 0;
     }
 
     get pid(): string {
@@ -59,6 +65,20 @@ export class Proceso implements IProceso {
         return this._tiempoBloqueoRestante;
     }
 
+    get ticksCpuConsumidos(): number {
+        return this._ticksCpuConsumidos;
+    }
+
+    get ticksParaBloqueo(): number {
+        return this._ticksParaBloqueo;
+    }
+
+    get duracionBloqueo(): number {
+        return this._duracionBloqueo;
+    }
+
+
+
     cambiarEstado(nuevoEstado:string): void{
         this._estado = nuevoEstado;
     }
@@ -87,4 +107,6 @@ export class Proceso implements IProceso {
             this._tiempoBloqueoRestante -= 1;
         } //si el tiempo de bloqueo es mayor a 0 se le resta 1 
     }
+
+    
 }
