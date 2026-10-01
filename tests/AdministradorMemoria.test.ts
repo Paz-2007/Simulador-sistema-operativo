@@ -63,6 +63,33 @@ describe("AdministradorMemoria", () => {
         expect(memoria.asignar("P2", 250)).toBe(false);
     });
 
+    it("Debe realizar coalescencia de bloques libres", () => {
+        const memoria =
+            new AdministradorMemoria(1000);
+
+        memoria.asignar("P1", 200);
+        memoria.asignar("P2", 300);
+
+        memoria.liberar("P1");
+        memoria.liberar("P2");
+
+        expect(memoria.bloques.length).toBe(1);
+        expect(memoria.bloques[0].tamano).toBe(1000);
+        expect(memoria.bloques[0].libre).toBe(true);
+    });
+
+        it("Debe calcular memoria ocupada", () => {
+        const memoria =
+            new AdministradorMemoria(1000);
+
+        memoria.asignar("P1", 300);
+        memoria.asignar("P2", 200);
+
+        expect(memoria.memoriaOcupada()).toBe(500);
+    });
+
+
+
 
 
 
