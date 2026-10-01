@@ -7,16 +7,12 @@ export class Proceso {
     private _quantumConsumido: number;
     private _tiempoBloqueoRestante: number;
 
-    constructor(
-        pid: string,
-        tamanoMemoria: number,
-        tiempoCpuTotal: number
-    ) {
+    constructor( pid: string, tamanoMemoria: number, tiempoCpuTotal: number ) {
         this._pid = pid;
         this._tamanoMemoria = tamanoMemoria;
         this._tiempoCpuTotal = tiempoCpuTotal;
         this._tiempoCpuRestante = tiempoCpuTotal;
-        this._estado = "NUEVO";
+        this._estado = "Nuevo";
         this._quantumConsumido = 0;
         this._tiempoBloqueoRestante = 0;
     }
@@ -49,19 +45,17 @@ export class Proceso {
         return this._tiempoBloqueoRestante;
     }
 
-    set estado(valor: string) {
-        this._estado = valor;
+    cambiarEstado(nuevoEstado:string): void{
+        this._tiempoCpuRestante -=1;
+        this._quantumConsumido +=1;
     }
 
-    set tiempoCpuRestante(valor: number) {
-        this._tiempoCpuRestante = valor;
+    comsumirCpu(): void {
+        this._tiempoCpuRestante -= 1;
+        this._quantumConsumido += 1;
     }
 
-    set quantumConsumido(valor: number) {
-        this._quantumConsumido = valor;
-    }
-
-    set tiempoBloqueoRestante(valor: number) {
-        this._tiempoBloqueoRestante = valor;
+    reiniciarQuantum(): void {
+        this._quantumConsumido = 0:
     }
 }
