@@ -43,4 +43,6 @@ export class BloqueMemoria {
     set pid(valor: string | null) {
         this._pid = valor;
     }
+
+    
 }
