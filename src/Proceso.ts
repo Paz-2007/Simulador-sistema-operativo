@@ -15,6 +15,8 @@ export class Proceso {
         this._estado = "Nuevo";
         this._quantumConsumido = 0;
         this._tiempoBloqueoRestante = 0;
+
+       
     }
 
     get pid(): string {
@@ -46,17 +48,16 @@ export class Proceso {
     }
 
     cambiarEstado(nuevoEstado:string): void{
-        this._tiempoCpuRestante -=1;
-        this._quantumConsumido +=1;
+        this._estado = nuevoEstado;
     }
 
-    comsumirCpu(): void {
+    consumirCpu(): void {
         this._tiempoCpuRestante -= 1;
         this._quantumConsumido += 1;
     }
 
     reiniciarQuantum(): void {
-        this._quantumConsumido = 0:
+        this._quantumConsumido = 0;
     }
 
     bloquear(ticks: number): void {
