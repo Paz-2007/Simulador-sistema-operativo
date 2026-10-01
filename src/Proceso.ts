@@ -108,5 +108,16 @@ export class Proceso implements IProceso {
         } //si el tiempo de bloqueo es mayor a 0 se le resta 1 
     }
 
+       debeBloquearse(): boolean {
+        return (
+            this._ticksParaBloqueo > 0 &&
+            this._ticksCpuConsumidos ===
+                this._ticksParaBloqueo &&
+            this._tiempoCpuRestante > 0
+        ); // si el proceso tiene tick para bloquear y los ticks 
+        // consumidos son iguales a los tickas para bloquear y el 
+        // tiempo de cpu restante es mayor a 0 se bloquea el proceso
+    }
+
     
 }
