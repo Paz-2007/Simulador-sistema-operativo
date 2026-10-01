@@ -6,5 +6,37 @@ describe("AdministradorMemoria", () => {
     it('Debe crear un administrador de memoria con el tamano especificado', () => {
      const administrador = new AdministradorMemoria(1024);
      expect (administrador.memoriaLibre()).toBe(1024)    
-    })
+    });
+
+    it("Debe iniciar con toda la memoria libre", () => {
+        const memoria =
+            new AdministradorMemoria(1000);
+
+        expect(memoria.memoriaTotal).toBe(1000);
+        expect(memoria.memoriaLibre()).toBe(1000);
+        expect(memoria.memoriaOcupada()).toBe(0);
+        expect(memoria.bloques.length).toBe(1);
+    });
+
+    it("Debe asignar usando First-Fit", () => {
+        const memoria =new AdministradorMemoria(1000);
+
+        expect(memoria.asignar("P1", 200)).toBe(true);
+
+        expect(memoria.bloques[0].pid).toBe("P1");
+        expect(memoria.bloques[0].tamano).toBe(200);
+        expect(memoria.bloques[1].libre).toBe(true);
+        expect(memoria.bloques[1].tamano).toBe(800);
+    });
+    
+     it("Debe dividir un bloque cuando sobra memoria", () => {
+        const memoria =new AdministradorMemoria(1000);memoria.asignar("P1", 300);
+
+        expect(memoria.bloques.length).toBe(2);
+        expect(memoria.bloques[0].tamano).toBe(300);
+        expect(memoria.bloques[1].tamano).toBe(700);
+    });
+
+
+
 });
