@@ -99,6 +99,22 @@ it("RF01 - Debe rechazar memoria inválida", () => {
         expect(bloques[1].tamano).toBe(700);
     });
 
+     it("RF05 - Debe liberar memoria al terminar un proceso", () => {
+        const simulador = new Simulador(500, 2);
+
+        const proceso = new Proceso("P1", 200, 1);
+
+        simulador.registrarProceso(proceso);
+
+        simulador.tick();
+
+        expect(proceso.estado).toBe("Terminado");
+
+        expect(simulador.memoriaLibre()).toBe(500);
+    });
+
+
+
 
 
 
