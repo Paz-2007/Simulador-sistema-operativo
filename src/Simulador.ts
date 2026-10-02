@@ -243,7 +243,29 @@ get memoriaTotal(): number {
         this._ejecutando = null;
     }
 
+     private reencolarProceso(
+        proceso: Proceso
+    ): void {
+        proceso.cambiarEstado("Listo"
+        );
+
+        proceso.reiniciarQuantum();
+
+        this._listos.push(proceso
+        );
+
+        this._cambiosContexto += 1;
+
+        this._ejecutando = null;
+    }
+
     
+
+    
+
+
+
+
 
     
     
