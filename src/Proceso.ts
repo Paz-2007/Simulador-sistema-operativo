@@ -119,5 +119,24 @@ export class Proceso implements IProceso {
         // tiempo de cpu restante es mayor a 0 se bloquea el proceso
     }
 
+    configurarEventoES(ticksParaBloqueo: number,duracionBloqueo: number
+    ): void { 
+        //se configura el evento e/s con los ticks para bloquear y la duracion del bloqueo
+        if (ticksParaBloqueo <= 0 ||!Number.isInteger(ticksParaBloqueo)
+        ) {
+            throw new Error("Los ticks para E/S deben ser positivos");
+        } //si los ticks para E/s son menores o iguales a 0 o no son enteros se lanza error
+
+        if (duracionBloqueo <= 0 ||!Number.isInteger(duracionBloqueo)
+        ) {
+            throw new Error("La duración del bloqueo debe ser positiva");
+        } //si la duracion del bloqueo es menor o igual a 0 o no es entero se lanza error
+        
+        this._ticksParaBloqueo =ticksParaBloqueo;
+        //se asigna el valor de ticks para bloqueo
+
+        this._duracionBloqueo =duracionBloqueo;
+        //se asigna el valor de duracion del bloqueo
+    }
     
-}
+    }

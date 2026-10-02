@@ -120,6 +120,10 @@ get memoriaTotal(): number {
 
         this._esperandoMemoria.push(proceso);
         //se agrega el proceso al arreglo de procesos esperando memoria
+      
+    }
+    
+
     }
 
    
@@ -128,4 +132,3 @@ get memoriaTotal(): number {
 
 
 
-}
