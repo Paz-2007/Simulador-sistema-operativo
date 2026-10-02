@@ -80,7 +80,27 @@ it("RF01 - Debe rechazar memoria inválida", () => {
         expect(p2.estado).toBe("Esperando Memoria");
     });
 
-    
+
+    it("RF04 - Debe asignar memoria contigua", () => {
+        const simulador =new Simulador(1000, 2);
+
+        const p1 = new Proceso("P1", 300, 4);
+
+        simulador.registrarProceso(p1);
+        simulador.tick();
+
+        const bloques = simulador.bloquesMemoria;
+
+        expect(bloques[0].inicio).toBe(0);
+        expect(bloques[0].tamano).toBe(300);
+        expect(bloques[0].pid).toBe("P1");
+
+        expect(bloques[1].inicio).toBe(300);
+        expect(bloques[1].tamano).toBe(700);
+    });
+
+
+
 
 
 
