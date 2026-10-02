@@ -86,6 +86,7 @@ export class Proceso implements IProceso {
     consumirCpu(): void {
         this._tiempoCpuRestante -= 1;
         this._quantumConsumido += 1;
+        this._ticksCpuConsumidos += 1;
     }
 
     reiniciarQuantum(): void {
@@ -93,14 +94,15 @@ export class Proceso implements IProceso {
     }
 
     bloquear(ticks: number): void {
-        if (ticks<=0 || !Number.isInteger(ticks)) {
-            throw new Error("Proceso bloqueado");
-            
-        }
-        this._estado = "Bloqueado"; 
-        this._tiempoBloqueoRestante = ticks;
-        //si el tick es 0 o el numero tiene decimales se bloquea el programa
-    }
+    ticks <= 0 || !Number.isInteger(ticks)
+        ? (() => {
+              throw new Error("La duración del bloqueo debe ser positiva");
+            })()
+        : null;
+
+    this._estado = "Bloqueado";
+    this._tiempoBloqueoRestante = ticks;
+}
 
     actualizarBloqueo(): void {
         if (this._tiempoBloqueoRestante > 0) {
@@ -119,10 +121,7 @@ export class Proceso implements IProceso {
         // tiempo de cpu restante es mayor a 0 se bloquea el proceso
     }
 
-    configurarEventoES(
-    ticksParaBloqueo: number,
-    duracionBloqueo: number
-): void {
+    configurarEventoES(ticksParaBloqueo: number,duracionBloqueo: number): void {
     ticksParaBloqueo <= 0 ||
     !Number.isInteger(ticksParaBloqueo)
         ? (() => {
