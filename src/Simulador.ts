@@ -259,7 +259,11 @@ get memoriaTotal(): number {
         this._ejecutando = null;
     }
 
-    
+
+
+
+
+
 
     
 
