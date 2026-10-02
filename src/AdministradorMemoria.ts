@@ -53,6 +53,16 @@ export class AdministradorMemoria implements IAdministradorMemoria{
         return true;
     }
 
+    private asignarEnBloque(indice: number,pid: string, tamano: number
+    ): boolean {
+        const bloque =this._bloques[indice];
+
+        return bloque.tamano === tamano
+            ? this.ocuparBloque(bloque,pid)
+            : this.dividirBloque(indice,bloque,pid,tamano
+              );
+    }
+
     
      
 
