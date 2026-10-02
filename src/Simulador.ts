@@ -197,12 +197,37 @@ get memoriaTotal(): number {
             );
     }
 
-    
+    private asignarSiguienteProceso(): void {
+        const proceso =this._listos.shift()!;
 
+        proceso.cambiarEstado("Ejecutando");
 
+        proceso.reiniciarQuantum();
 
+        this._ejecutando = proceso;
+    }
 
+    private despachar(): void {
+        this._ejecutando !== null
+            ? null
+            : this._listos.length === 0
+            ? null
+            : this.asignarSiguienteProceso();
+    }
 
+     private terminarProceso(
+        proceso: Proceso): void {
+        proceso.cambiarEstado("Terminado"
+        );
+
+        this._memoria.liberar(proceso.pid
+        );
+
+        this._terminados.push(proceso
+        );
+
+        this._ejecutando = null;
+    }
     
     
 
