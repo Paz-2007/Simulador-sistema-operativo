@@ -81,37 +81,54 @@ describe("Diagramas de secuencia", () => {
         //se verifica qye los 200kb hayan sido asignados
     });
 
-    it("Diagrama 2 - Ejecucion mediante Round Robin", () => {
-        // Se verifica que al alcanzar el quantum, el primer proceso
-        // // vuelva a Listo y el segundo proceso pase a Ejecutando
-        const simulador = new Simulador(1000, 2);
 
-        const p1 = new Proceso("P1", 200, 5);
-        const p2 = new Proceso("P2", 200, 5);
+it("Diagrama 3 - Bloqueo por E/S y finalización", () => {
+    const simulador = new Simulador(1000, 3);
+    const proceso = new Proceso("P1", 200, 5);
 
-        // Se registran ambos procesos
-        simulador.registrarProceso(p1);
-        simulador.registrarProceso(p2);
+    simulador.registrarProceso(proceso);
 
-        // Primer tick: P1 comienza a ejecutar
-        simulador.tick();
+    // después de consumir 2 ticks de CPU,
+    // el proceso se bloquea durante 2 ticks.
+    simulador.configurarES("P1", 2, 2);
 
-        expect(simulador.ejecutando).toBe(p1);
-        expect(p1.quantumConsumido).toBe(1);
+    // Tick 1: el proceso comienza a ejecutar
+    // Consume 1 tick de CPU
+    simulador.tick();
+    expect(proceso.estado).toBe("Ejecutando");
 
-        // Segundo tick: P1 alcanza el quantum y se realiza
-        // el cambio de contexto hacia P2
-        simulador.tick();
+    // Tick 2: consume su segundo tick de CPU
+    // y se bloquea por E/S
+    simulador.tick();
+    expect(proceso.estado).toBe("Bloqueado");
 
-        expect(p1.estado).toBe("Listo");
-        expect(simulador.ejecutando).toBe(p2);
+    // Tick 3: continúa bloqueado.
+    simulador.tick();
+    expect(proceso.estado).toBe("Bloqueado");
 
-        // El quantum de P1 se reinicia al volver a la cola de Listos
-        expect(p1.quantumConsumido).toBe(0);
+    // Tick 4: finaliza la E/S, vuelve a Listo,
+    // es despachado y consume su tercer tick de CPU
+    simulador.tick();
+    expect(proceso.estado).toBe("Ejecutando");
 
-        // Se verifica que se haya registrado el cambio de contexto
-        expect(simulador.cambiosContexto).toBe(1);
-    });
+    // Tick 5: consume su cuarto tick de CPU
+    // Todavía le queda 1 tick
+    simulador.tick();
+    expect(proceso.estado).toBe("Ejecutando");
+
+    // Tick 6: consume su último tick de CPU
+    // y pasa a Terminado
+    simulador.tick();
+    expect(proceso.estado).toBe("Terminado");
+
+    // Se verifica que el proceso haya sido agregado
+    // a la lista de procesos terminados
+    expect(simulador.terminados).toContain(proceso);
+
+    // Al terminar, se libera la memoria que ocupaba
+    expect(simulador.memoriaOcupada()).toBe(0);
+});
+
 
 
 
