@@ -98,15 +98,13 @@ export class Proceso implements IProceso {
     }
 
     bloquear(ticks: number): void {
-    ticks <= 0 || !Number.isInteger(ticks)
-        ? (() => {
-              throw new Error("La duración del bloqueo debe ser positiva");
-            })()
-        : null;
+    if (ticks <= 0 || !Number.isInteger(ticks)
+        ) { throw new Error("La duración del bloqueo debe ser positiva");
+        }
 
-    this._estado = "Bloqueado";
-    this._tiempoBloqueoRestante = ticks;
-}
+        this._estado = "Bloqueado";
+        this._tiempoBloqueoRestante = ticks;
+    }
 
     actualizarBloqueo(): void {
         if (this._tiempoBloqueoRestante > 0) {
@@ -126,29 +124,18 @@ export class Proceso implements IProceso {
     }
 
     configurarEventoES(ticksParaBloqueo: number,duracionBloqueo: number): void {
-    ticksParaBloqueo <= 0 ||
-    !Number.isInteger(ticksParaBloqueo)
-        ? (() => {
-              throw new Error(
-                  "Los ticks para E/S deben ser positivos"
-              );
-          })()
-        : null;
-
-    duracionBloqueo <= 0 ||
-    !Number.isInteger(duracionBloqueo)
-        ? (() => {
-              throw new Error(
-                  "La duración del bloqueo debe ser positiva"
-              );
-          })()
-        : null;
-
-    this._ticksParaBloqueo =
-        ticksParaBloqueo;
-
-    this._duracionBloqueo =
-        duracionBloqueo;
-}
-    
+    if (ticksParaBloqueo <= 0 || !Number.isInteger(ticksParaBloqueo)
+    ) {throw new Error("Los ticks para E/S deben ser positivos");
     }
+
+    if (duracionBloqueo <= 0 || !Number.isInteger(duracionBloqueo)
+    ) { throw new Error( "La duración del bloqueo debe ser positiva");
+    }
+
+    this._ticksParaBloqueo =ticksParaBloqueo;
+
+    this._duracionBloqueo = duracionBloqueo;
+}
+
+    
+}
