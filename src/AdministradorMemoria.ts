@@ -27,44 +27,36 @@ export class AdministradorMemoria implements IAdministradorMemoria{
         return [...this._bloques];
     }
 
-    private ocuparBloque(bloque: BloqueMemoria,pid: string
-    ): boolean {
-        bloque.ocupar(pid);
+    asignar(pid: string, tamano: number): boolean {
+        const indice = this._bloques.findIndex(bloque => bloque.libre && bloque.tamano >= tamano);
+
+        if (indice === -1) {
+            return false;
+        }
+
+        const bloque = this._bloques[indice];
+
+        if (bloque.tamano === tamano) {bloque.ocupar(pid);
+            return true;
+        } // si el bloque es exactamente del tamano requerido se ocupa 
+        // y se retoma la ejecucion
+
+        const ocupado = new BloqueMemoria(bloque.inicio,tamano); //se curea un nuevo bloque con el tamano requerdo
+
+        ocupado.ocupar(pid); //se ocupa el bloque con el tamano requerido 
+        //y se le asigna el pid al proceso que lo solicita
+
+        const libre = new BloqueMemoria(bloque.inicio + tamano,bloque.tamano - tamano);
+        //se crea un nuevo bloque con el tamano restante del bloque original
+
+        this._bloques.splice(indice,1,ocupado,libre);
+        //se reemplaza el bloque original por los dos nuevos bloques (ocupado y libre)
+
         return true;
-    }
-
-     private dividirBloque(indice: number,bloque: BloqueMemoria,pid: string,tamano: number
-    ): boolean {
-        const ocupado =new BloqueMemoria(bloque.inicio,tamano);
-
-        ocupado.ocupar(pid);
-
-        const libre =new BloqueMemoria(bloque.inicio + tamano,bloque.tamano - tamano);
-
-        this._bloques.splice( indice, 1,ocupado,libre);
-
-        return true;
-    }
-
-    private liberarBloque(indice: number): boolean {
-        this._bloques[indice].liberar();
-        this.coalescer();
-
-        return true;
-    }
-
-    private asignarEnBloque(indice: number,pid: string, tamano: number
-    ): boolean {
-        const bloque =this._bloques[indice];
-
-        return bloque.tamano === tamano
-            ? this.ocuparBloque(bloque,pid)
-            : this.dividirBloque(indice,bloque,pid,tamano
-              );
-    }
-
+        //se retorna true indicando que la memoria se pudo asignar al proceso
     
-     
+    } 
+
 
    private coalescer(): void {
         let indice = 0;
