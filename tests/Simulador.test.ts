@@ -218,6 +218,20 @@ it("RF01 - Debe rechazar memoria inválida", () => {
     });
 
 
+    it("RF09 - Debe calcular el porcentaje de uso de CPU", () => {
+        const simulador =  new Simulador(1000, 2);
+        const proceso = new Proceso("P1", 200, 3);
+
+        simulador.registrarProceso(proceso);
+
+        simulador.tick();
+        simulador.tick();
+
+        expect(simulador.porcentajeUsoCPU()).toBe(100);
+    });
+
+
+
 
      
 
