@@ -259,6 +259,21 @@ get memoriaTotal(): number {
         this._ejecutando = null;
     }
 
+    private verificarQuantum(proceso: Proceso): void {
+        this._listos.length > 0
+            ? this.reencolarProceso(
+                  proceso
+                )
+            : proceso.reiniciarQuantum();
+    }
+
+
+    
+
+    
+
+
+
 
 
 
