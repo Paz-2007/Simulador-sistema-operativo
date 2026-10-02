@@ -275,6 +275,25 @@ it("RF01 - Debe rechazar memoria inválida", () => {
         expect(simulador.mayorBloqueLibre()).toBe(800);
     });
 
+     it("RF09 - Debe calcular la fragmentación externa", () => {
+        const simulador =new Simulador(1000, 2);
+
+        const p1 =new Proceso("P1", 200, 1);
+
+        const p2 =new Proceso("P2", 200, 5);
+
+        simulador.registrarProceso(p1);
+        simulador.registrarProceso(p2);
+
+        simulador.tick();
+
+        expect(simulador.memoriaOcupada()).toBe(200);
+
+        expect(simulador.memoriaLibre() ).toBe(800);
+    });
+
+
+
 
 
 
