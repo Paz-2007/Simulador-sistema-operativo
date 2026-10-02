@@ -55,3 +55,28 @@ describe ("Prueba general", () => {
 });
 
 })
+
+describe("Diagramas de secuencia", () => {
+
+    it("Diagrama 1 - Registro y asignación de memoria", () => {
+        const simulador = new Simulador(1000, 2);
+        const proceso = new Proceso("P1", 200, 4);
+
+        simulador.registrarProceso(proceso);
+        //se registra el proceso
+
+        expect(proceso.estado).toBe("Esperando Memoria");
+        //al registrarlo queda esperando que se le asigne memoria
+
+        simulador.tick();
+        //el tick intenta admitir el proceso y asignarle memoria
+
+        expect(proceso.estado).toBe("Ejecutando");
+        //al tener memoria disponible el proceso pasa a ejecutar
+
+        expect(simulador.memoriaOcupada()).toBe(200);
+        expect(simulador.memoriaLibre()).toBe(800);
+        //se verifica qye los 200kb hayan sido asignados
+    });
+
+});
