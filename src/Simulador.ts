@@ -306,6 +306,28 @@ get memoriaTotal(): number {
             ) * 100;
     }
 
+    memoriaOcupada(): number {
+        return this._memoria.memoriaOcupada();
+    }
+
+    memoriaLibre(): number {
+        return this._memoria.memoriaLibre();
+    }
+
+    porcentajeMemoriaOcupada(): number {
+        return this._memoria.porcentajeOcupacion();
+    }
+
+    mayorBloqueLibre(): number {
+        return this._memoria.mayorBloqueLibre();
+    }
+
+    fragmentacionExterna(): number {
+        return this._memoria.fragmentacionExterna();
+    }
+
+
+
     
 
 
