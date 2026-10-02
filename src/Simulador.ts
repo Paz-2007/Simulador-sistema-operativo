@@ -173,6 +173,34 @@ get memoriaTotal(): number {
         }
     }
 
+    private actualizarBloqueados(): void {
+        this._bloqueados.forEach(proceso =>proceso.actualizarBloqueo()
+        ); //se actualiza el tiempo de bloqueo dentro de cada proceso bloqueado
+
+        const regresan =this._bloqueados.filter(proceso =>proceso.tiempoBloqueoRestante === 0
+            ); //se filtran los procesos que ya no tienen tiempo de bloqueo restante
+
+        regresan.forEach(
+            proceso => {proceso.cambiarEstado("Listo"
+                );
+
+                proceso.reiniciarQuantum();
+
+                this._listos.push(proceso
+                );
+            }
+        );
+
+        this._bloqueados =this._bloqueados.filter(
+                proceso =>
+                    proceso.tiempoBloqueoRestante > 0
+            );
+    }
+
+    
+
+
+
 
 
     
