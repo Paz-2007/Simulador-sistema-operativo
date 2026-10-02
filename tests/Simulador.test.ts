@@ -19,22 +19,18 @@ it("RF01 - Debe rechazar memoria inválida", () => {
 
     it("RF02 - Debe registrar un proceso", () => {
         const simulador =new Simulador(1024, 2);
-
         const proceso =new Proceso("P1", 200, 4);
 
         simulador.registrarProceso(proceso);
 
         expect(simulador.esperandoMemoria.length).toBe(1);
-
         expect(proceso.estado).toBe("Esperando Memoria");
     });
 
 
      it("RF02 - No debe aceptar PID duplicado", () => {
         const simulador = new Simulador(1024, 2);
-
         const p1 =new Proceso("P1", 200, 4);
-
         const p2 =new Proceso("P1", 100, 2);
 
         simulador.registrarProceso(p1);
@@ -46,7 +42,6 @@ it("RF01 - Debe rechazar memoria inválida", () => {
 
     it("RF02 - No debe aceptar un proceso mayor que la memoria", () => {
         const simulador = new Simulador(500, 2);
-
         const proceso = new Proceso("P1", 600, 4);
 
         expect(() => simulador.registrarProceso(proceso)
@@ -55,11 +50,9 @@ it("RF01 - Debe rechazar memoria inválida", () => {
 
       it("RF03 - Debe pasar un proceso a Listo cuando obtiene memoria", () => {
         const simulador = new Simulador(1024, 2);
-
         const proceso =new Proceso("P1", 200, 4);
 
         simulador.registrarProceso(proceso);
-
         simulador.tick();
 
         expect(proceso.estado).toBe("Ejecutando");
@@ -67,9 +60,7 @@ it("RF01 - Debe rechazar memoria inválida", () => {
 
      it("RF03 - Debe dejar esperando a un proceso sin memoria suficiente", () => {
         const simulador = new Simulador(500, 2);
-
         const p1 =new Proceso("P1", 400, 4);
-
         const p2 =new Proceso("P2", 200, 4);
 
         simulador.registrarProceso(p1);
@@ -83,7 +74,6 @@ it("RF01 - Debe rechazar memoria inválida", () => {
 
     it("RF04 - Debe asignar memoria contigua", () => {
         const simulador =new Simulador(1000, 2);
-
         const p1 = new Proceso("P1", 300, 4);
 
         simulador.registrarProceso(p1);
@@ -101,15 +91,12 @@ it("RF01 - Debe rechazar memoria inválida", () => {
 
      it("RF05 - Debe liberar memoria al terminar un proceso", () => {
         const simulador = new Simulador(500, 2);
-
         const proceso = new Proceso("P1", 200, 1);
 
         simulador.registrarProceso(proceso);
-
         simulador.tick();
 
         expect(proceso.estado).toBe("Terminado");
-
         expect(simulador.memoriaLibre()).toBe(500);
     });
 
@@ -130,9 +117,7 @@ it("RF01 - Debe rechazar memoria inválida", () => {
 
     it("RF07 - Debe ejecutar procesos con Round Robin", () => {
         const simulador =new Simulador(1000, 2);
-
         const p1 =new Proceso("P1", 200, 4);
-
         const p2 =new Proceso("P2", 200, 4);
 
         simulador.registrarProceso(p1);
@@ -149,9 +134,7 @@ it("RF01 - Debe rechazar memoria inválida", () => {
 
     it("RF07 - Debe respetar el quantum", () => {
         const simulador = new Simulador(1000, 2);
-
         const p1 = new Proceso("P1", 200, 5);
-
         const p2 = new Proceso("P2", 200, 5);
 
         simulador.registrarProceso(p1);
@@ -167,9 +150,7 @@ it("RF01 - Debe rechazar memoria inválida", () => {
 
      it("RF07 - Debe registrar cambios de contexto", () => {
         const simulador = new Simulador(1000, 2);
-
         const p1 = new Proceso("P1", 200, 5);
-
         const p2 = new Proceso("P2", 200, 5);
 
         simulador.registrarProceso(p1);
@@ -183,43 +164,54 @@ it("RF01 - Debe rechazar memoria inválida", () => {
 
     it("RF08 - Debe bloquear un proceso por E/S", () => {
         const simulador =new Simulador(1000, 3);
-
         const proceso =new Proceso("P1", 200, 5);
 
         simulador.registrarProceso(proceso);
-
         simulador.configurarES("P1",2,3);
 
         simulador.tick();
         simulador.tick();
 
         expect(proceso.estado).toBe("Bloqueado");
-
         expect(simulador.bloqueados).toContain(proceso);
     });
 
      it("RF08 - Un proceso bloqueado no debe ejecutar CPU", () => {
         const simulador = new Simulador(1000, 3);
-
         const p1 = new Proceso("P1", 200, 5);
-
         const p2 = new Proceso("P2", 200, 5);
 
         simulador.registrarProceso(p1);
         simulador.registrarProceso(p2);
-
         simulador.configurarES( "P1",1,3 );
 
         simulador.tick();
-
         simulador.tick();
 
         expect(p1.estado).toBe("Bloqueado");
-
         expect(simulador.ejecutando).toBe(p2);
     });
 
-    
+
+    it("RF08 - Debe devolver el proceso a Listo después de la E/S", () => {
+        const simulador = new Simulador(1000, 3);
+        const proceso = new Proceso("P1", 200, 5);
+
+        simulador.registrarProceso(proceso);
+        simulador.configurarES("P1",1,2);
+
+        simulador.tick();
+        simulador.tick();
+
+        expect(proceso.estado).toBe("Bloqueado");
+
+        simulador.tick();
+
+        expect(proceso.estado).not.toBe("Bloqueado");
+    });
+
+
+
 
 
 
