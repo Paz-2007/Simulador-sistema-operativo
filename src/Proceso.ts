@@ -17,11 +17,15 @@ export class Proceso implements IProceso {
     private _duracionBloqueo: number;
 
     constructor( pid: string, tamanoMemoria: number, tiempoCpuTotal: number ) {
-        if(tiempoCpuTotal <= 0 || !Number.isInteger(tiempoCpuTotal)) {
-            throw new Error("Tiempo de cpu invalido");
-            //si el tiempo de cpu es 0 o el numero 
-            // no es entero se lanza error
+        if (tiempoCpuTotal <= 0 ||!Number.isInteger(tiempoCpuTotal)
+        ) {throw new Error("El tiempo de CPU debe ser un entero positivo");
         }
+
+        if (tamanoMemoria <= 0 ||!Number.isInteger(tamanoMemoria)
+        ) {throw new Error("El tamaño de memoria debe ser un entero positivo");
+    }
+        //si el tiempo de cpu es 0 o el numero 
+            // no es entero se lanza error
         
         
         this._pid = pid;
