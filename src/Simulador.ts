@@ -122,6 +122,60 @@ get memoriaTotal(): number {
         //se agrega el proceso al arreglo de procesos esperando memoria
       
     }
+
+    configurarIO(
+        pid: string,
+        ticksParaBloqueo: number,
+        duracionBloqueo: number
+    ): void {
+        const proceso =
+            this._procesos.find(
+                procesoBuscado =>
+                    procesoBuscado.pid === pid
+            );
+
+        if (proceso === undefined) {
+            throw new Error(
+                "Proceso inexistente"
+            );
+        }
+
+        proceso.configurarEventoES(
+            ticksParaBloqueo,
+            duracionBloqueo
+        );
+    }
+
+    private admitirProcesos(): void {
+        let indice = 0; //se inicializa el indice en 0 para 
+        //recorrer el arreglo de procesos esperando memoria
+
+        while (indice <this._esperandoMemoria.length
+        ) { //se reconoce que hay procesos esperando memoria y se inteta asignarle memoria
+            const proceso =this._esperandoMemoria[indice];
+            // se obtiene el proceso en la posicion del indice
+
+            const asignado =this._memoria.asignar(proceso.pid,proceso.tamanoMemoria);
+            // si se asigna memoria al proceso se cambia su estado a 'listo' 
+            // y se agrega al arreglo de procesos listos
+
+            if (asignado) {proceso.cambiarEstado("Listo");
+                // si se asigna memoria al proceso, se cambia su estado a "listo",
+
+                this._listos.push(proceso);
+                //se agrega el proceso al arreglo de procesos listos
+
+                this._esperandoMemoria.splice(indice,1);
+                // se elimina el proceso del arreglo de procesos esperando memoria
+            } else 
+                {indice += 1;}
+                //si no se asigna memoria al proceso se incrementa el indice para pasar al siguiente proceso
+        }
+    }
+
+    
+
+
     
 
     }
