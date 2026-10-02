@@ -10,7 +10,7 @@ export class AdministradorMemoria implements IAdministradorMemoria{
     private _bloques: BloqueMemoria[] = [];
 
     constructor(memoriaTotal: number) {
-        if(memoriaTotal <= 0||!Number.isInteger(this.memoriaTotal)){
+        if(memoriaTotal <= 0||!Number.isInteger(memoriaTotal)){
             throw new Error("La memoria debe ser un entero positivo");
         }
 

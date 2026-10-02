@@ -4,6 +4,7 @@ import { BloqueMemoria } from "./BloqueMemoria";
 
 export interface ISimulador {
     readonly quantum: number;
+    tick(): void;
 }
 
 export class Simulador implements ISimulador {
@@ -22,6 +23,8 @@ export class Simulador implements ISimulador {
     private _tickActual: number;
     private _ticksCPUOcupada: number;
     private _cambiosContexto: number;
+
+ 
 
     constructor(memoriaTotal: number, quantum: number) {
         if (memoriaTotal <= 0 ||!Number.isInteger(memoriaTotal)
@@ -59,6 +62,8 @@ export class Simulador implements ISimulador {
         // y cambios de contexto y el proceso en nulo
 
 }
+
+
 
 get memoriaTotal(): number {
         return this._memoria.memoriaTotal;
@@ -100,6 +105,11 @@ get memoriaTotal(): number {
         return this._memoria.bloques;
     }
 
+
+    get procesos(): Proceso[] {
+    return [...this._procesos];
+}
+
     registrarProceso(proceso: Proceso): void {
         const existe =this._procesos.some(procesoExistente =>procesoExistente.pid === proceso.pid);
         //se verifica si el proceso ya existe en el arreglo de procesos
@@ -123,7 +133,7 @@ get memoriaTotal(): number {
       
     }
 
-    configurarIO(
+    configurarES(
         pid: string,
         ticksParaBloqueo: number,
         duracionBloqueo: number
@@ -217,42 +227,32 @@ get memoriaTotal(): number {
 
      private terminarProceso(
         proceso: Proceso): void {
-        proceso.cambiarEstado("Terminado"
-        );
+        proceso.cambiarEstado("Terminado");
 
-        this._memoria.liberar(proceso.pid
-        );
+        this._memoria.liberar(proceso.pid);
 
-        this._terminados.push(proceso
-        );
+        this._terminados.push(proceso);
 
         this._ejecutando = null;
     }
 
-    private bloquearProceso(
-        proceso: Proceso
-    ): void {
-        proceso.bloquear(proceso.duracionBloqueo
-        );
+    private bloquearProceso( proceso: Proceso): void {
+        proceso.bloquear(proceso.duracionBloqueo);
 
-        this._bloqueados.push(proceso
-        );
+        this._bloqueados.push(proceso);
 
         this._cambiosContexto += 1;
 
         this._ejecutando = null;
     }
 
-     private reencolarProceso(
-        proceso: Proceso
-    ): void {
-        proceso.cambiarEstado("Listo"
-        );
+
+     private reencolarProceso(proceso: Proceso): void {
+        proceso.cambiarEstado("Listo");
 
         proceso.reiniciarQuantum();
 
-        this._listos.push(proceso
-        );
+        this._listos.push(proceso);
 
         this._cambiosContexto += 1;
 
@@ -261,9 +261,7 @@ get memoriaTotal(): number {
 
     private verificarQuantum(proceso: Proceso): void {
         this._listos.length > 0
-            ? this.reencolarProceso(
-                  proceso
-                )
+            ? this.reencolarProceso(proceso)
             : proceso.reiniciarQuantum();
     }
 
@@ -293,6 +291,8 @@ get memoriaTotal(): number {
         this._ejecutando !== null
             ? this.ejecutarCPU()
             : null;
+
+        this.despachar();
 
         this._tickActual += 1;
     }

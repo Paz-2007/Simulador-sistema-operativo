@@ -9,6 +9,8 @@ export class BloqueMemoria implements IBloqueMemoria {
     private _libre: boolean;
     private _pid: string | null;
 
+
+
     constructor(inicio: number, tamano:number){
         this._inicio=inicio;
         this._tamano=tamano;
@@ -32,6 +34,7 @@ export class BloqueMemoria implements IBloqueMemoria {
         return this._pid;
     }
 
+
     ocupar(pid:string): void{
         if (!this._libre){
             throw new Error("El bloque ya esta ocupado");}
@@ -46,5 +49,4 @@ export class BloqueMemoria implements IBloqueMemoria {
         this._libre=true;
         this._pid=null;
     }
-
 }

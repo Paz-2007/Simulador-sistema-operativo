@@ -128,6 +128,36 @@ it("RF01 - Debe rechazar memoria inválida", () => {
     });
 
 
+    it("RF07 - Debe ejecutar procesos con Round Robin", () => {
+        const simulador =new Simulador(1000, 2);
+
+        const p1 =new Proceso("P1", 200, 4);
+
+        const p2 =new Proceso("P2", 200, 4);
+
+        simulador.registrarProceso(p1);
+        simulador.registrarProceso(p2);
+
+        simulador.tick();
+
+        expect(simulador.ejecutando).toBe(p1);
+
+        simulador.tick();
+
+        expect(simulador.ejecutando).toBe(p2);
+    });
+
+
+
+ 
+
+
+
+
+
+
+
+
 
 
 
