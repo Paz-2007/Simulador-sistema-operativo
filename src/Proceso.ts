@@ -1,7 +1,4 @@
-export interface IProceso {
-    readonly pid: string;
-    readonly estado: string;
-}
+import {IProceso} from "./IProceso";
 
 export class Proceso implements IProceso {
     private _pid: string;
@@ -115,8 +112,7 @@ export class Proceso implements IProceso {
        debeBloquearse(): boolean {
         return (
             this._ticksParaBloqueo > 0 &&
-            this._ticksCpuConsumidos ===
-                this._ticksParaBloqueo &&
+            this._ticksCpuConsumidos === this._ticksParaBloqueo &&
             this._tiempoCpuRestante > 0
         ); // si el proceso tiene tick para bloquear y los ticks 
         // consumidos son iguales a los tickas para bloquear y el 
