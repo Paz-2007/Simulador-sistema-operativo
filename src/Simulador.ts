@@ -228,6 +228,23 @@ get memoriaTotal(): number {
 
         this._ejecutando = null;
     }
+
+    private bloquearProceso(
+        proceso: Proceso
+    ): void {
+        proceso.bloquear(proceso.duracionBloqueo
+        );
+
+        this._bloqueados.push(proceso
+        );
+
+        this._cambiosContexto += 1;
+
+        this._ejecutando = null;
+    }
+
+    
+
     
     
 
