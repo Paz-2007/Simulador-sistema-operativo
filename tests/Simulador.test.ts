@@ -253,36 +253,18 @@ it("RF01 - Debe rechazar memoria inválida", () => {
         expect(simulador.memoriaLibre()).toBe(800);
     });
 
+    it("RF09 - Debe calcular el porcentaje de memoria ocupada", () => {
+        const simulador = new Simulador(1000, 2);
 
+        const proceso = new Proceso("P1", 200, 5);
 
+        simulador.registrarProceso(proceso);
 
+        simulador.tick();
 
-     
+        expect(simulador.porcentajeMemoriaOcupada()).toBe(20);
+    });
 
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
    
 });
