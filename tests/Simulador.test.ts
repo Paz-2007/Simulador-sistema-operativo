@@ -265,6 +265,19 @@ it("RF01 - Debe rechazar memoria inválida", () => {
         expect(simulador.porcentajeMemoriaOcupada()).toBe(20);
     });
 
-    
+       it("RF09 - Debe obtener el mayor bloque libre", () => {
+        const simulador = new Simulador(1000, 2);
+        const proceso = new Proceso("P1", 200, 5);
+
+        simulador.registrarProceso(proceso);
+        simulador.tick();
+
+        expect(simulador.mayorBloqueLibre()).toBe(800);
+    });
+
+
+
+
+
    
 });
