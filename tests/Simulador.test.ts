@@ -307,11 +307,18 @@ it("RF01 - Debe rechazar memoria inválida", () => {
     expect(simulador.bloquesMemoria).toHaveLength(3);
 });
 
+it("RF10 - No debe haber más de un proceso ejecutándose", () => {
+    const simulador =new Simulador(1000, 2);
+    const p1 =new Proceso("P1", 200, 5);
+    const p2 =new Proceso("P2", 200, 5);
 
+    simulador.registrarProceso(p1);
+    simulador.registrarProceso(p2);
+    simulador.tick();
 
-
-
-
+    expect(simulador.ejecutando).toBe(p1);
+    expect(p2.estado).not.toBe("Ejecutando");
+});
 
    
 });
