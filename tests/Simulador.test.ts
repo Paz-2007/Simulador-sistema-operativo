@@ -198,6 +198,29 @@ it("RF01 - Debe rechazar memoria inválida", () => {
         expect(simulador.bloqueados).toContain(proceso);
     });
 
+     it("RF08 - Un proceso bloqueado no debe ejecutar CPU", () => {
+        const simulador = new Simulador(1000, 3);
+
+        const p1 = new Proceso("P1", 200, 5);
+
+        const p2 = new Proceso("P2", 200, 5);
+
+        simulador.registrarProceso(p1);
+        simulador.registrarProceso(p2);
+
+        simulador.configurarES( "P1",1,3 );
+
+        simulador.tick();
+
+        simulador.tick();
+
+        expect(p1.estado).toBe("Bloqueado");
+
+        expect(simulador.ejecutando).toBe(p2);
+    });
+
+    
+
 
 
 
