@@ -113,6 +113,22 @@ it("RF01 - Debe rechazar memoria inválida", () => {
         expect(simulador.memoriaLibre()).toBe(500);
     });
 
+      it("RF06 - Debe avanzar un tick por llamada", () => {
+        const simulador = new Simulador(500, 2);
+
+        expect(simulador.tickActual).toBe(0);
+
+        simulador.tick();
+
+        expect(simulador.tickActual).toBe(1);
+
+        simulador.tick();
+
+        expect(simulador.tickActual).toBe(2);
+    });
+
+
+
 
 
 
