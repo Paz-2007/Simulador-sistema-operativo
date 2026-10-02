@@ -147,6 +147,41 @@ it("RF01 - Debe rechazar memoria inválida", () => {
         expect(simulador.ejecutando).toBe(p2);
     });
 
+    it("RF07 - Debe respetar el quantum", () => {
+        const simulador = new Simulador(1000, 2);
+
+        const p1 = new Proceso("P1", 200, 5);
+
+        const p2 = new Proceso("P2", 200, 5);
+
+        simulador.registrarProceso(p1);
+        simulador.registrarProceso(p2);
+
+        simulador.tick();
+        simulador.tick();
+
+        expect(simulador.ejecutando).toBe(p2);
+
+        expect(p1.quantumConsumido).toBe(0);
+    });
+
+     it("RF07 - Debe registrar cambios de contexto", () => {
+        const simulador = new Simulador(1000, 2);
+
+        const p1 = new Proceso("P1", 200, 5);
+
+        const p2 = new Proceso("P2", 200, 5);
+
+        simulador.registrarProceso(p1);
+        simulador.registrarProceso(p2);
+
+        simulador.tick();
+        simulador.tick();
+
+        expect(simulador.cambiosContexto).toBeGreaterThan(0);
+    });
+
+
 
 
  
