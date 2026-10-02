@@ -297,35 +297,19 @@ get memoriaTotal(): number {
         this._tickActual += 1;
     }
 
-
-
-    
-
-
-    
-
-    
-
-
-
-
-
-
-
-
+    porcentajeUsoCPU(): number {
+        return this._tickActual === 0
+            ? 0
+            : (
+                this._ticksCPUOcupada /
+                this._tickActual
+            ) * 100;
+    }
 
     
 
 
 
-
-
-    
-    
-
-
-
-    
 
     }
 
