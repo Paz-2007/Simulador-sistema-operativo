@@ -4,7 +4,9 @@ import { Proceso } from "../src/Proceso";
 import {AdministradorMemoria} from "../src/AdministradorMemoria";
 import { BloqueMemoria } from "../src/BloqueMemoria";
 
-it("Prueba general - Debe ejecutar un escenario completo del simulador", () => {
+
+describe ("Prueba general", () => {
+    it("Debe ejecutar un escenario completo del simulador", () => {
     const simulador = new Simulador(1000, 2);
 
     const p1 = new Proceso("P1", 200, 3);
@@ -52,3 +54,4 @@ it("Prueba general - Debe ejecutar un escenario completo del simulador", () => {
     expect(simulador.ejecutando).toBeNull();
 });
 
+})
