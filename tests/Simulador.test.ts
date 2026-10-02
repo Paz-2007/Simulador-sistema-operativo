@@ -53,7 +53,35 @@ it("RF01 - Debe rechazar memoria inválida", () => {
         ).toThrow();
     });
 
-     
+      it("RF03 - Debe pasar un proceso a Listo cuando obtiene memoria", () => {
+        const simulador = new Simulador(1024, 2);
+
+        const proceso =new Proceso("P1", 200, 4);
+
+        simulador.registrarProceso(proceso);
+
+        simulador.tick();
+
+        expect(proceso.estado).toBe("Ejecutando");
+    });
+
+     it("RF03 - Debe dejar esperando a un proceso sin memoria suficiente", () => {
+        const simulador = new Simulador(500, 2);
+
+        const p1 =new Proceso("P1", 400, 4);
+
+        const p2 =new Proceso("P2", 200, 4);
+
+        simulador.registrarProceso(p1);
+        simulador.registrarProceso(p2);
+
+        simulador.tick();
+
+        expect(p2.estado).toBe("Esperando Memoria");
+    });
+
+    
+
 
 
 
