@@ -267,6 +267,40 @@ get memoriaTotal(): number {
             : proceso.reiniciarQuantum();
     }
 
+     private ejecutarCPU(): void {
+        const proceso =this._ejecutando!;
+
+        proceso.consumirCpu();
+
+        this._ticksCPUOcupada += 1;
+
+        proceso.tiempoCpuRestante === 0
+            ? this.terminarProceso(proceso)
+            : proceso.debeBloquearse()
+            ? this.bloquearProceso(proceso)
+            : proceso.quantumConsumido >=
+              this._quantum
+            ? this.verificarQuantum(proceso)
+            : null;
+    }
+
+
+    tick(): void {
+        this.admitirProcesos();
+        this.actualizarBloqueados();
+        this.despachar();
+
+        this._ejecutando !== null
+            ? this.ejecutarCPU()
+            : null;
+
+        this._tickActual += 1;
+    }
+
+
+
+    
+
 
     
 
