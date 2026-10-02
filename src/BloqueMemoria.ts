@@ -1,7 +1,4 @@
-export interface IBloqueMemoria {
-    readonly inicio: number;
-    readonly tamano: number;
-}
+import { IBloqueMemoria } from "./Interfaces/IBloqueMemoria";
 
 export class BloqueMemoria implements IBloqueMemoria {
     private _inicio: number;

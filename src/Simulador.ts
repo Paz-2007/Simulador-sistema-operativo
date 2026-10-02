@@ -2,10 +2,7 @@ import { Proceso } from "./Proceso";
 import { AdministradorMemoria } from "./AdministradorMemoria";
 import { BloqueMemoria } from "./BloqueMemoria";
 
-export interface ISimulador {
-    readonly quantum: number;
-    tick(): void;
-}
+import { ISimulador } from "./Interfaces/ISimulador";
 
 export class Simulador implements ISimulador {
     private _memoria: AdministradorMemoria;

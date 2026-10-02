@@ -1,4 +1,4 @@
-import {IProceso} from "./IProceso";
+import {IProceso} from "./Interfaces/IProceso";
 
 export class Proceso implements IProceso {
     private _pid: string;

@@ -1,8 +1,6 @@
 import {BloqueMemoria} from "./BloqueMemoria"
 
-export interface IAdministradorMemoria {
-    readonly memoriaTotal: number;
-}
+import { IAdministradorMemoria } from "./Interfaces/IAdministradorMemoria";
 
 
 export class AdministradorMemoria implements IAdministradorMemoria{
