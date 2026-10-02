@@ -320,5 +320,24 @@ it("RF10 - No debe haber más de un proceso ejecutándose", () => {
     expect(p2.estado).not.toBe("Ejecutando");
 });
 
+it("RF10 - Las vistas del sistema deben proteger el estado interno", () => {
+    const simulador = new Simulador(1000, 2);
+    const p1 = new Proceso("P1", 200, 5);
+    const p2 = new Proceso("P2", 200, 5);
+
+    simulador.registrarProceso(p1);
+    simulador.registrarProceso(p2);
+
+    simulador.tick();
+
+    const listos =simulador.listos;
+
+    listos.splice(0, 1);
+
+    expect(simulador.listos).toContain(p2);
+});
+
+
+
    
 });

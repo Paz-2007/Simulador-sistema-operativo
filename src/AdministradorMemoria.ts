@@ -16,7 +16,6 @@ export class AdministradorMemoria implements IAdministradorMemoria{
 
         this._memoriaTotal=memoriaTotal;
         this._bloques=[new BloqueMemoria(0,this._memoriaTotal)];
-
     }
 
     get memoriaTotal():number{
