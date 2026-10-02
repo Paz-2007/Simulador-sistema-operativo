@@ -337,7 +337,27 @@ it("RF10 - Las vistas del sistema deben proteger el estado interno", () => {
     expect(simulador.listos).toContain(p2);
 });
 
+it("RF10 - No debe haber procesos duplicados en las colas", () => {
+    const simulador = new Simulador(1000, 2);
+    const p1 = new Proceso("P1", 200, 5);
+    const p2 = new Proceso("P2", 200, 5);
 
+    simulador.registrarProceso(p1);
+    simulador.registrarProceso(p2);
+
+    simulador.tick();
+    simulador.tick();
+    simulador.tick();
+
+    const todos = [
+        ...simulador.listos,
+        ...simulador.bloqueados,
+        ...simulador.terminados
+    ];
+
+    const ids =todos.map(proceso => proceso.pid);
+    expect(new Set(ids).size).toBe(ids.length);
+});
 
    
 });
