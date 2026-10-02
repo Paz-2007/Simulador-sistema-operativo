@@ -181,6 +181,23 @@ it("RF01 - Debe rechazar memoria inválida", () => {
         expect(simulador.cambiosContexto).toBeGreaterThan(0);
     });
 
+    it("RF08 - Debe bloquear un proceso por E/S", () => {
+        const simulador =new Simulador(1000, 3);
+
+        const proceso =new Proceso("P1", 200, 5);
+
+        simulador.registrarProceso(proceso);
+
+        simulador.configurarES("P1",2,3);
+
+        simulador.tick();
+        simulador.tick();
+
+        expect(proceso.estado).toBe("Bloqueado");
+
+        expect(simulador.bloqueados).toContain(proceso);
+    });
+
 
 
 

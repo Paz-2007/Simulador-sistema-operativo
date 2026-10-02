@@ -144,17 +144,17 @@ get memoriaTotal(): number {
                     procesoBuscado.pid === pid
             );
 
-        if (proceso === undefined) {
-            throw new Error(
-                "Proceso inexistente"
-            );
-        }
-
-        proceso.configurarEventoES(
-            ticksParaBloqueo,
-            duracionBloqueo
-        );
-    }
+         proceso === undefined
+        ? (() => {
+              throw new Error(
+                  "Proceso inexistente"
+              );
+          })()
+        : proceso.configurarEventoES(
+              ticksParaBloqueo,
+              duracionBloqueo
+          );
+}
 
     private admitirProcesos(): void {
         let indice = 0;
