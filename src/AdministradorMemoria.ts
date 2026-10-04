@@ -4,8 +4,8 @@ import { IAdministradorMemoria } from "./Interfaces/IAdministradorMemoria";
 
 
 export class AdministradorMemoria implements IAdministradorMemoria{
-    private _memoriaTotal: number = 0;
-    private _bloques: BloqueMemoria[] = [];
+    private _memoriaTotal: number; //cantidad total de la memoria del sistema
+    private _bloques: BloqueMemoria[] = [];  //array de bloques de memoria
 
     constructor(memoriaTotal: number) {
         if(memoriaTotal <= 0||!Number.isInteger(memoriaTotal)){
@@ -13,7 +13,7 @@ export class AdministradorMemoria implements IAdministradorMemoria{
         }
 
         this._memoriaTotal=memoriaTotal;
-        this._bloques=[new BloqueMemoria(0,this._memoriaTotal)];
+        this._bloques=[new BloqueMemoria(0,this._memoriaTotal)]; //
     }
 
     get memoriaTotal():number{
@@ -25,30 +25,39 @@ export class AdministradorMemoria implements IAdministradorMemoria{
         return [...this._bloques];
     }
 
-    asignar(pid: string, tamano: number): boolean {
+    asignar(pid: string, tamano: number): boolean { //toma el proceso y la cantidad de memoria que va a usar
+        //busca un bloque libre lo suficientemente grande 
+        // y se lo asigna al proceso
+         //permite implemetar first fit con particion de bloque
         const indice = this._bloques.findIndex(bloque => bloque.libre && bloque.tamano >= tamano);
+        //busca el primer bloque libre que tebga tamano suficiente
 
         if (indice === -1) {
             return false;
-        }
+        } //si no encuentra lugar no se pudo asignar memoria
 
         const bloque = this._bloques[indice];
+        //obtener del array el bloque que este en en la posicion indice osea libre
 
-        if (bloque.tamano === tamano) {bloque.ocupar(pid);
+        if (bloque.tamano === tamano) {
+            bloque.ocupar(pid);
             return true;
         } // si el bloque es exactamente del tamano requerido se ocupa 
         // y se retoma la ejecucion
 
-        const ocupado = new BloqueMemoria(bloque.inicio,tamano); //se curea un nuevo bloque con el tamano requerdo
-
+        //si el bloque es mas grande:
+        const ocupado = new BloqueMemoria(bloque.inicio,tamano); 
+        //se crea un nuevo bloque con el tamano requerdo
         ocupado.ocupar(pid); //se ocupa el bloque con el tamano requerido 
         //y se le asigna el pid al proceso que lo solicita
 
         const libre = new BloqueMemoria(bloque.inicio + tamano,bloque.tamano - tamano);
-        //se crea un nuevo bloque con el tamano restante del bloque original
-
+        //se crea un nuevo bloque con el tamano restante del bloque original, 
+        // inicia en el final del tamano solicitado y tiene 
+        // tamano del espacio que resta
         this._bloques.splice(indice,1,ocupado,libre);
         //se reemplaza el bloque original por los dos nuevos bloques (ocupado y libre)
+       
 
         return true;
         //se retorna true indicando que la memoria se pudo asignar al proceso

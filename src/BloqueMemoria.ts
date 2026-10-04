@@ -1,10 +1,10 @@
 import { IBloqueMemoria } from "./Interfaces/IBloqueMemoria";
 
 export class BloqueMemoria implements IBloqueMemoria {
-    private _inicio: number;
-    private _tamano: number;
-    private _libre: boolean;
-    private _pid: string | null;
+    private _inicio: number;  //desde que posicin de memoria comienza el bloque
+    private _tamano: number; //cuanto mide ese bloque
+    private _libre: boolean;  
+    private _pid: string | null;  //identificacion del proceso que esta ocpando ese bloque
 
 
 
@@ -34,8 +34,9 @@ export class BloqueMemoria implements IBloqueMemoria {
 
     ocupar(pid:string): void{
         if (!this._libre){
-            throw new Error("El bloque ya esta ocupado");}
-            this._libre=false;
+            throw new Error("El bloque ya esta ocupado");
+        }
+            this._libre=false; 
             this._pid=pid;
             //si el bloque no esta libre se lanza error, 
             // si esta libre se ocupa y se asigna el pid 
