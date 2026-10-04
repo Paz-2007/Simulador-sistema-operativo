@@ -66,19 +66,22 @@ export class AdministradorMemoria implements IAdministradorMemoria{
 
 
    private coalescer(): void {
-        let indice = 0;
+    //sirve para unir bloques libres que estan uno al lado del otro
+        let indice = 0; //contador para recorres los bloques
 
-        while (indice < this._bloques.length - 1) {
+        while (indice < this._bloques.length - 1) { //compara actual con el siguiente
             const actual = this._bloques[indice];
             const siguiente = this._bloques[indice + 1];
-            //si el bloque actual y el siguiente son libres, se combinan en un solo bloque
+            //se obtienen los dos bloques
 
+            //si el bloque actual y el siguiente son libres, se combinan en un solo bloque
             if (actual.libre && siguiente.libre) {
                 const nuevo = new BloqueMemoria(actual.inicio,actual.tamano + siguiente.tamano
                 ); //se crea un nuevo bloque con el inicio del bloque actual 
                 //y el tamano de la suma de los dos bloques libres
 
-                this._bloques.splice(indice,2,nuevo); //se reemplazan los dos bloques libres por el nuevo bloque combinado
+                this._bloques.splice(indice,2,nuevo); 
+                //se reemplazan los dos bloques libres por el nuevo bloque combinado
             } else {
                 indice += 1;
             } //si no se pueden combinar se pasa al siguiente bloque
@@ -106,9 +109,8 @@ export class AdministradorMemoria implements IAdministradorMemoria{
     }
 
     memoriaOcupada(): number { //se calcula la memoria ocupada sumando el tamano de los bloques ocupados
-        return this._bloques.filter(bloque => !bloque.libre).reduce( 
-            // se filtran los bloques ocupados y se suman los tamanos usando reduce
-                (total, bloque) => total + bloque.tamano,0);
+        return this._bloques.filter(bloque => !bloque.libre).reduce((total, bloque) => total + bloque.tamano,0);
+                // se filtran los bloques ocupados y se suman los tamanos usando reduce
                 //se retorna la memoria ocupada
     }
 
@@ -121,11 +123,9 @@ export class AdministradorMemoria implements IAdministradorMemoria{
     } //se calcla el porcentaje de ocupacion dividiendo la memoria ocupada entre la memoria total y multiplicando por 100
 
     mayorBloqueLibre(): number { 
-        return this._bloques.filter(bloque => bloque.libre)
-        .reduce((mayor, bloque) => 
-            // se filtran los bloques libres y se busca el bloque con el mayor tamano usando reduce
-                    Math.max(mayor, bloque.tamano),
-                    //se retorna el tamano del mayor bloque libre
+        return this._bloques.filter(bloque => bloque.libre).reduce((mayor, bloque) => Math.max(mayor, bloque.tamano),
+        // se filtran los bloques libres y se busca el bloque con el mayor tamano usando reduce           
+        //se retorna el tamano del mayor bloque libre
                 0 //si no hay bloques libres se retorna 0
             );
     } 
