@@ -123,11 +123,10 @@ export class AdministradorMemoria implements IAdministradorMemoria{
     } //se calcla el porcentaje de ocupacion dividiendo la memoria ocupada entre la memoria total y multiplicando por 100
 
     mayorBloqueLibre(): number { 
-        return this._bloques.filter(bloque => bloque.libre).reduce((mayor, bloque) => Math.max(mayor, bloque.tamano),
-        // se filtran los bloques libres y se busca el bloque con el mayor tamano usando reduce           
-        //se retorna el tamano del mayor bloque libre
-                0 //si no hay bloques libres se retorna 0
-            );
+        return this._bloques.filter(bloque => bloque.libre).reduce( (mayor, bloque) => Math.max(mayor, bloque.tamano) , 0);
+            // se filtran los bloques libres y se busca el bloque con el mayor tamano comparando usando reduce           
+            //se retorna el tamano del mayor bloque libre
+            //si no hay bloques libres se retorna 0
     } 
 
     fragmentacionExterna(): number {

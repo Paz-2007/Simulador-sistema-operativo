@@ -6,20 +6,21 @@ import { ISimulador } from "./Interfaces/ISimulador";
 
 export class Simulador implements ISimulador {
     private _memoria: AdministradorMemoria;
-    private _quantum: number;
+    private _quantum: number;   //quantum de round robin
 
-    private _procesos: Proceso[];
+    private _procesos: Proceso[]; //registro general de procesos
 
+    //arrays separados de estados de procesos
     private _esperandoMemoria: Proceso[];
     private _listos: Proceso[];
     private _bloqueados: Proceso[];
     private _terminados: Proceso[];
 
-    private _ejecutando: Proceso | null;
+    private _ejecutando: Proceso | null; //proceso que actalmente est usando la cpu
 
-    private _tickActual: number;
-    private _ticksCPUOcupada: number;
-    private _cambiosContexto: number;
+    private _tickActual: number;  //en que tick esta el simmulador
+    private _ticksCPUOcupada: number; //cuantis ticks estuvo trabajando la cpu
+    private _cambiosContexto: number;  //contador de campos de contexto
 
  
 
@@ -36,27 +37,26 @@ export class Simulador implements ISimulador {
         } // si el quantum es menor o igual a 0 se lanza error
 
         this._memoria = new AdministradorMemoria(memoriaTotal);
-        //se crea un nuevo administrador de memoria con la memoria total especificada
+        //se crea un nuevo administrador de memoria con la memoria total y el quantum especificada
 
         this._quantum = quantum;
         //se asigna el quantum especificado
 
         this._procesos = [];
-        // se crea un mapa para almacenar los procesos por su pid
+        // se crea un array de procesos
 
         this._esperandoMemoria=[];
         this._listos=[];
         this._bloqueados=[];
         this._terminados=[];
-        //se crean arreglos para almacenar los procesos 
-        // en diferentes estados
+        //se crean los arrays de los diferentes estados de los procesos
 
         this._ejecutando=null;
         this._tickActual=0;
         this._ticksCPUOcupada=0;
         this._cambiosContexto=0;
         // se inicializan los contadores de ticks 
-        // y cambios de contexto y el proceso en nulo
+        // y cambios de contexto y el proceso ejecutando en nulo
 
 }
 
@@ -130,26 +130,15 @@ get memoriaTotal(): number {
       
     }
 
-    configurarES(
-        pid: string,
-        ticksParaBloqueo: number,
-        duracionBloqueo: number
-    ): void {
-        const proceso =
-            this._procesos.find(
-                procesoBuscado =>
-                    procesoBuscado.pid === pid
-            );
+    configurarES(pid: string,ticksParaBloqueo: number,duracionBloqueo: number): void {
+        //toma el pid del proceso que se debe bloquear, cuando y cuanto tiempo
+        const proceso =this._procesos.find(procesoBuscado =>procesoBuscado.pid === pid);
 
          proceso === undefined
         ? (() => {
-              throw new Error(
-                  "Proceso inexistente"
-              );
+              throw new Error("Proceso inexistente");
           })()
-        : proceso.configurarEventoES(
-              ticksParaBloqueo,
-              duracionBloqueo
+        : proceso.configurarEventoES(ticksParaBloqueo,duracionBloqueo
           );
 }
 
@@ -184,63 +173,58 @@ get memoriaTotal(): number {
         this._bloqueados.forEach(proceso =>proceso.actualizarBloqueo()
         ); //se actualiza el tiempo de bloqueo dentro de cada proceso bloqueado
 
-        const regresan =this._bloqueados.filter(proceso =>proceso.tiempoBloqueoRestante === 0
-            ); //se filtran los procesos que ya no tienen tiempo de bloqueo restante
+        const regresan =this._bloqueados.filter(proceso =>proceso.tiempoBloqueoRestante === 0); 
+            //se filtran los procesos que ya no tienen tiempo de bloqueo restante
 
         regresan.forEach(
-            proceso => {proceso.cambiarEstado("Listo"
-                );
+            proceso => {proceso.cambiarEstado("Listo");
 
                 proceso.reiniciarQuantum();
 
-                this._listos.push(proceso
-                );
-            }
+                this._listos.push(proceso);
+            }  //los procesos que regresan pasan a listo y se les reinicia su quantum
         );
 
-        this._bloqueados =this._bloqueados.filter(
-                proceso =>
-                    proceso.tiempoBloqueoRestante > 0
-            );
+        this._bloqueados =this._bloqueados.filter(proceso =>proceso.tiempoBloqueoRestante > 0);
+        //se sacan de bloqueados los procesos listos, se quedan solo los que siguen bloqueados
     }
 
     private asignarSiguienteProceso(): void {
-        const proceso =this._listos.shift()!;
+        const proceso =this._listos.shift()!; //toma el primer elemento del array listos
 
         proceso.cambiarEstado("Ejecutando");
 
         proceso.reiniciarQuantum();
 
-        this._ejecutando = proceso;
+        this._ejecutando = proceso; //asigna al proceso la cpu
     }
 
     private despachar(): void {
-        this._ejecutando !== null
-            ? null
-            : this._listos.length === 0
-            ? null
-            : this.asignarSiguienteProceso();
+        this._ejecutando !== null 
+            ? null  //si ya hay alquien ejecutando no hace nada
+            : this._listos.length === 0  //si no pregunta si hay procesos listos
+            ? null  //si no, no hace nada
+            : this.asignarSiguienteProceso();  //si si asigna el siguiente proceso
     }
 
-     private terminarProceso(
-        proceso: Proceso): void {
+     private terminarProceso(proceso: Proceso): void {
         proceso.cambiarEstado("Terminado");
 
-        this._memoria.liberar(proceso.pid);
+        this._memoria.liberar(proceso.pid);  //cuando el rpoceso termina devuelve la memoria que estaba usando
 
-        this._terminados.push(proceso);
+        this._terminados.push(proceso);  //guarda el proceso en terminados
 
-        this._ejecutando = null;
+        this._ejecutando = null;  //la cpu queda libre
     }
 
     private bloquearProceso( proceso: Proceso): void {
-        proceso.bloquear(proceso.duracionBloqueo);
+        proceso.bloquear(proceso.duracionBloqueo);  
 
-        this._bloqueados.push(proceso);
+        this._bloqueados.push(proceso);  //agrega el proceso a bloqueados
 
-        this._cambiosContexto += 1;
+        this._cambiosContexto += 1;  //suma un cambio de contexto
 
-        this._ejecutando = null;
+        this._ejecutando = null;  //la cpu queda disponible
     }
 
 
@@ -322,12 +306,6 @@ get memoriaTotal(): number {
     fragmentacionExterna(): number {
         return this._memoria.fragmentacionExterna();
     }
-
-
-
-    
-
-
 
 
     }
