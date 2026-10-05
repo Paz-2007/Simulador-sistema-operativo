@@ -23,11 +23,9 @@ describe("Proceso",()=> {
 
         proceso.consumirCpu();
 
-        expect(proceso.tiempoCpuRestante)
-            .toBe(3);
+        expect(proceso.tiempoCpuRestante).toBe(3);
 
-        expect(proceso.quantumConsumido)
-            .toBe(1);
+        expect(proceso.quantumConsumido).toBe(1);
             //si el proceso consume un tick se le resta 
             // 1 al tiempo restante y se le suma 1 al 
             // quantum consumido
@@ -35,6 +33,7 @@ describe("Proceso",()=> {
 
 
        it("Proceso cambia de estado", () => {
+        //que funcione bien el metodo cambiar estado
 
         const proceso = new Proceso("P1", 200, 4);
 

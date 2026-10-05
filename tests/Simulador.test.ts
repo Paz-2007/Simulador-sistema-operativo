@@ -381,7 +381,7 @@ it("RF01 - Debe rechazar memoria inválida", () => {
     expect(simulador.memoriaLibre()).toBe(500);
 
     // La memoria libre esta dividida en dos bloques 
-    // [LIBRE 250] [P2 250] [P3 250] [LIBRE 250]
+    // [Libre 250] [P2 250] [P3 250] [Libre 250]
     // Asi que el mayor bloque libre sera de 250
     expect(simulador.mayorBloqueLibre()).toBe(250);
 

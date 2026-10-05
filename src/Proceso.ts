@@ -1,7 +1,7 @@
 import {IProceso} from "./Interfaces/IProceso";
 
 export class Proceso implements IProceso {
-    private _pid: string;  //identificacion
+    private _pid: string;  //identificador
     private _tamanoMemoria: number;  //cuanta memoria necesita
     private _tiempoCpuTotal: number;  //cuanta cpu necesita para completarse
     private _tiempoCpuRestante: number;  //tiempo de cpu que le falta
