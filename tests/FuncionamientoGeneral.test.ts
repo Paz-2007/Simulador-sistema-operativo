@@ -84,16 +84,21 @@ describe("Diagramas de secuencia", () => {
     
     it("Debe ejecutar procesos con Round Robin", () => {
         const simulador =new Simulador(1000, 2);
+        //quantum = 2
         const p1 =new Proceso("P1", 200, 4);
         const p2 =new Proceso("P2", 200, 4);
 
         simulador.registrarProceso(p1);
         simulador.registrarProceso(p2);
 
+        // Primer tick, P1 consigue la CPU
         simulador.tick();
 
         expect(simulador.ejecutando).toBe(p1);
 
+        // Segundo tick, P1 consume su segundo tick
+        // Como alcanzó el quantum de 2
+        // P1 vuelve a Listo y P2 toma la CPU
         simulador.tick();
 
         expect(simulador.ejecutando).toBe(p2);
@@ -102,15 +107,24 @@ describe("Diagramas de secuencia", () => {
 
 it("Debe bloquear un proceso por E/S", () => {
         const simulador =new Simulador(1000, 3);
+        //quantum = 3
         const proceso =new Proceso("P1", 200, 5);
 
         simulador.registrarProceso(proceso);
         simulador.configurarES("P1",2,3);
+        // Configura la e/s
+        // después de 2 ticks de CPU
+        // se bloquea durante 3 ticks
 
         simulador.tick();
         simulador.tick();
 
+        // Configura la e/s
+        // después de 2 ticks de CPU
+        // se bloquea durante 3 ticks
         expect(proceso.estado).toBe("Bloqueado");
+
+        // Ademas P1 debe estar dentro de la lista de bloqueados
         expect(simulador.bloqueados).toContain(proceso);
     });
 

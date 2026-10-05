@@ -222,7 +222,7 @@ it("RF01 - Debe rechazar memoria inválida", () => {
         // Al llegar a 2 ticks de CPU P1 debe bloquearse
         expect(proceso.estado).toBe("Bloqueado");
 
-        // ademas P1 debe estar dentro de la lista de bloqueados
+        // Ademas P1 debe estar dentro de la lista de bloqueados
         expect(simulador.bloqueados).toContain(proceso);
     });
 
@@ -345,19 +345,50 @@ it("RF01 - Debe rechazar memoria inválida", () => {
         expect(simulador.mayorBloqueLibre()).toBe(800);
     });
 
-     it("RF09 - Debe calcular la fragmentación externa", () => {
-        const simulador =new Simulador(1000, 2);
-        const p1 =new Proceso("P1", 200, 1);
-        const p2 =new Proceso("P2", 200, 5);
 
-        simulador.registrarProceso(p1);
-        simulador.registrarProceso(p2);
+    it("RF09 - Debe calcular la fragmentación externa", () => {
+    const simulador = new Simulador(1000, 2);
+    //quantum = 2
 
-        simulador.tick();
+    const p1 = new Proceso("P1", 250, 1);
+    //// P1 necesita 250 KB y solamente 1 tick de CPU
+    // Al terminar va a liberar sus 250 KB
 
-        expect(simulador.memoriaOcupada()).toBe(200);
-        expect(simulador.memoriaLibre() ).toBe(800);
-    });
+    const p2 = new Proceso("P2", 250, 5);
+    // P2 necesita 250 KB y seguira ejecutandose
+
+    const p3 = new Proceso("P3", 250, 5);
+    // P3 necesita 250 KB y seguira ejecutandose
+
+    // Registramos los tres procesos en el simulador
+    // En este momento quedan esperando que se les asigne memoria
+    simulador.registrarProceso(p1);
+    simulador.registrarProceso(p2);
+    simulador.registrarProceso(p3);
+
+
+    // Avanzamos un tick de la simulacion
+    // Se asigna memoria a los tres procesos
+    // P1 comienza a ejecutarse y como necesita solo 1 tick
+    // termina y libera sus 250 KB
+    simulador.tick();
+
+    // Despues de terminar P1 quedan P2 y P3 ocupando memoria
+    // 250 KB + 250 KB = 500 KB ocupados
+    expect(simulador.memoriaOcupada()).toBe(500);
+
+    // La memoria total es 1000 KB, si hay 500 KB ocupados quedan 500 KB libres
+    expect(simulador.memoriaLibre()).toBe(500);
+
+    // La memoria libre esta dividida en dos bloques 
+    // [LIBRE 250] [P2 250] [P3 250] [LIBRE 250]
+    // Asi que el mayor bloque libre sera de 250
+    expect(simulador.mayorBloqueLibre()).toBe(250);
+
+    //Fragmentacion externa = (1 - mayorBloqueLibre / memoriaLibre) * 100
+    //(1 - 250 / 500) * 100 = 50%  
+    expect(simulador.fragmentacionExterna()).toBe(50);
+});
 
     it("RF10 - Debe exponer el estado actual del sistema", () => {
     const simulador = new Simulador(1000, 2);
