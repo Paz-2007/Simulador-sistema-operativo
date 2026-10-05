@@ -242,49 +242,46 @@ get memoriaTotal(): number {
 
     private verificarQuantum(proceso: Proceso): void {
         this._listos.length > 0
-            ? this.reencolarProceso(proceso)
+            ? this.reencolarProceso(proceso)  
             : proceso.reiniciarQuantum();
     }
 
      private ejecutarCPU(): void {
-        const proceso =this._ejecutando!;
+        const proceso = this._ejecutando!; //obtiene el proceso que esta usando la cpu
 
-        proceso.consumirCpu();
+        proceso.consumirCpu(); //consume un tick de cpu
 
-        this._ticksCPUOcupada += 1;
+        this._ticksCPUOcupada += 1;  //cuenta que la cpu estuvo ocupada durante ese tick
 
-        proceso.tiempoCpuRestante === 0
-            ? this.terminarProceso(proceso)
-            : proceso.debeBloquearse()
-            ? this.bloquearProceso(proceso)
-            : proceso.quantumConsumido >=
-              this._quantum
-            ? this.verificarQuantum(proceso)
-            : null;
+        proceso.tiempoCpuRestante === 0  //si el tiempo de cpu restante es 0
+            ? this.terminarProceso(proceso)  //terminar el proceso
+            : proceso.debeBloquearse()  //sino verifica si el proceso debe bloquarse
+               ? this.bloquearProceso(proceso) // si si bloquea el proceso
+             : proceso.quantumConsumido >=this._quantum //si no se bloquea, si el quantum consumido es mayor o igual al quantum 
+            ? this.verificarQuantum(proceso)  //verifica el quantum del proceso
+            : null;  //si nada de eso ocurre sigue ejecutando
     }
 
 
-    tick(): void {
-        this.admitirProcesos();
-        this.actualizarBloqueados();
-        this.despachar();
+    tick(): void {  //un instante de tiempo de la simulacion
+        this.admitirProcesos();  //intenta sacar procesos de esperando memoria y llevarlos a listo si consigue memoria
+        this.actualizarBloqueados(); //los procesos bloqueados reducen su tiempo restante
+        this.despachar();  //despacha los procesos, si no hay ndie usando la cpu pero hay procesos listos pasa de listos a ejecutando
 
-        this._ejecutando !== null
-            ? this.ejecutarCPU()
-            : null;
+        this._ejecutando !== null  //si hay alguien ejecutando
+            ? this.ejecutarCPU()  //ejecuta 1 tick de cpu
+            : null;  //sino la cpu queda libre
 
-        this.despachar();
+        this.despachar(); //despacha la cpu para buscar otro proceso listo
 
-        this._tickActual += 1;
+        this._tickActual += 1; //aumentar el tick
     }
 
     porcentajeUsoCPU(): number {
-        return this._tickActual === 0
+        return this._tickActual === 0  //si el tick ctual es 0 devolver 0
             ? 0
-            : (
-                this._ticksCPUOcupada /
-                this._tickActual
-            ) * 100;
+            : (this._ticksCPUOcupada /this._tickActual) * 100; 
+            //sino calcular el porcentaje de uso de cpu
     }
 
     memoriaOcupada(): number {
