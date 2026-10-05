@@ -8,32 +8,39 @@ import { BloqueMemoria } from "../src/BloqueMemoria";
 describe ("Prueba general", () => {
     it("Debe ejecutar un escenario completo del simulador", () => {
     const simulador = new Simulador(1000, 2);
+    //se crea un simulador con memoria 100KB y un quantum de 2 ticks
 
+    // Se crean tres procesos con diferente tamano y duracion
     const p1 = new Proceso("P1", 200, 3);
     const p2 = new Proceso("P2", 300, 4);
     const p3 = new Proceso("P3", 150, 2);
 
+    // Se registran y pasan a esperando memoria
     simulador.registrarProceso(p1);
     simulador.registrarProceso(p2);
     simulador.registrarProceso(p3);
 
+    // Despues de consumir 2 ticks de CPU P2 se bloqueara durante 2 ticks
     simulador.configurarES("P2", 2, 2);
 
-    // Tick 1: P1 comienza a ejecutar
+    // Tick 1 se asigna memoria a los procesos
+    //  P1 comienza a ejecutar
     simulador.tick();
 
-    expect(p1.estado).toBe("Ejecutando");
-    expect(p2.estado).toBe("Listo");
-    expect(p3.estado).toBe("Listo");
-    expect(simulador.memoriaOcupada()).toBe(650);
+
+    expect(p1.estado).toBe("Ejecutando"); //P1 estara utilizando la CPU
+    expect(p2.estado).toBe("Listo");  //P2 estara listo para ejecutar
+    expect(p3.estado).toBe("Listo"); //P3 tambien
+    expect(simulador.memoriaOcupada()).toBe(650); // Los procesos ocupan 200 + 300 + 150 = 650 KB
 
     // Tick 2: P1 alcanza el quantum y P2 pasa a ejecutar
     simulador.tick();
 
-    expect(p1.estado).toBe("Listo");
-    expect(p2.estado).toBe("Ejecutando");
+    expect(p1.estado).toBe("Listo"); //Por round robin p1 vuelve a listo
+    expect(p2.estado).toBe("Ejecutando"); //P2 pasa a ejecutar
 
-    // Tick 3: P2 consume su primer tick de CPU
+    // Tick 3: P2 consume su primer tick de CPU, todavia no se bloquea 
+    // porque no alcanza los 2 ticks configurados
     simulador.tick();
 
     expect(p2.estado).toBe("Ejecutando");
@@ -41,22 +48,23 @@ describe ("Prueba general", () => {
     // Tick 4: P2 consume su segundo tick y se bloquea por E/S
     simulador.tick();
 
-    expect(p2.estado).toBe("Bloqueado");
-    expect(simulador.bloqueados).toContain(p2);
+    expect(p2.estado).toBe("Bloqueado"); //Se comprueba que este bloqueado
+    expect(simulador.bloqueados).toContain(p2); // y  que este dentro de bloqueados
 
-    // Se ejecutan ticks adicionales para completar el escenario
-    for (let i = 0; i < 10; i++) {simulador.tick();
+    // Se ejecutan ticks adicionales para que los procesos sigan ejecutandose
+    for (let i = 0; i < 10; i++) {
+        simulador.tick();
     }
 
-    expect(simulador.terminados).toHaveLength(3);
-    expect(simulador.memoriaOcupada()).toBe(0);
-    expect(simulador.memoriaLibre()).toBe(1000);
-    expect(simulador.ejecutando).toBeNull();
+    expect(simulador.terminados).toHaveLength(3); // Deberian haber terminado los 3
+    expect(simulador.memoriaOcupada()).toBe(0);  // No deberia habr memoria ocupada
+    expect(simulador.memoriaLibre()).toBe(1000);  // Deberia estar libre toda la memoria
+    expect(simulador.ejecutando).toBeNull();  // La CPU deberia estar libre
 });
 
 })
 
-describe("Diagramas de secuencia", () => {
+describe("Asignacion de memoria y plaificacion de CPU", () => {
 
     it("Registro y asignación de memoria", () => {
         //se verifica que el proceso cambie de estado 
