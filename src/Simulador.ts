@@ -133,13 +133,13 @@ get memoriaTotal(): number {
     configurarES(pid: string,ticksParaBloqueo: number,duracionBloqueo: number): void {
         //toma el pid del proceso que se debe bloquear, cuando y cuanto tiempo
         const proceso =this._procesos.find(procesoBuscado =>procesoBuscado.pid === pid);
+        //busca el proceso cuyo pid es igual al pid del proceso que se debe buscar
 
-         proceso === undefined
-        ? (() => {
-              throw new Error("Proceso inexistente");
-          })()
+         proceso === undefined //si el proceso no se encueentra tira error
+        ? (() => {throw new Error("Proceso inexistente")})()
         : proceso.configurarEventoES(ticksParaBloqueo,duracionBloqueo
-          );
+          ); //sino confgura el evento e/s con los ticks en los que se va a 
+          //bloquear y la duracion correspondiente
 }
 
     private admitirProcesos(): void {
@@ -152,7 +152,7 @@ get memoriaTotal(): number {
             //se obtiene el proceso en la posicion actual del arreglo
 
             const asignado =this._memoria.asignar(proceso.pid,proceso.tamanoMemoria);
-            //se intenta asignar memoria al proceso
+            //se intenta asignar memoria al proceso y se almacena true o false en asignado
 
             asignado? (proceso.cambiarEstado("Listo"),
                     this._listos.push(proceso
@@ -229,15 +229,16 @@ get memoriaTotal(): number {
 
 
      private reencolarProceso(proceso: Proceso): void {
-        proceso.cambiarEstado("Listo");
+        proceso.cambiarEstado("Listo");  
+        //pone el proceso en el estado de los que tienen memoria asignada pero espera la cpu
 
-        proceso.reiniciarQuantum();
+        proceso.reiniciarQuantum();  //reinicia el quantum del proceso
 
-        this._listos.push(proceso);
+        this._listos.push(proceso);  //anade al proceso al array de listos
 
-        this._cambiosContexto += 1;
+        this._cambiosContexto += 1; //suma un cambio de contexto
 
-        this._ejecutando = null;
+        this._ejecutando = null; //libera la cpu
     }
 
     private verificarQuantum(proceso: Proceso): void {
@@ -284,6 +285,7 @@ get memoriaTotal(): number {
             //sino calcular el porcentaje de uso de cpu
     }
 
+    //llama a los metodos del administrador memoria para las metricas
     memoriaOcupada(): number {
         return this._memoria.memoriaOcupada();
     }
@@ -303,7 +305,6 @@ get memoriaTotal(): number {
     fragmentacionExterna(): number {
         return this._memoria.fragmentacionExterna();
     }
-
 
     }
 
