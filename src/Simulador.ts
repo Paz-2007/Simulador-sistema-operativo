@@ -105,7 +105,52 @@ get memoriaTotal(): number {
 
     get procesos(): Proceso[] {
     return [...this._procesos];
-}
+    }
+
+    set quantum(valor: number) { 
+    this._quantum = valor; }
+
+    set tickActual(valor: number) { 
+    this._tickActual = valor; }
+
+    set ejecutando(valor: Proceso | null) { 
+    this._ejecutando = valor; }
+
+
+    set esperandoMemoria(valor: Proceso[]) {
+    this._esperandoMemoria = valor;
+    }
+
+
+    set listos(valor: Proceso[]) {
+    this._listos = valor;
+    }
+
+
+    set bloqueados(valor: Proceso[]) {
+    this._bloqueados = valor;
+    }
+
+
+    set terminados(valor: Proceso[]) {
+    this._terminados = valor;
+    }
+
+    set cambiosContexto(valor: number) { 
+        this._cambiosContexto = valor; 
+    }
+
+    set procesos(valor: Proceso[]) {
+    this._procesos = valor;
+    }
+
+    get memoria(): AdministradorMemoria {
+    return this._memoria;
+    }
+
+    set memoria(valor: AdministradorMemoria) {
+    this._memoria = valor;
+    }
 
     registrarProceso(proceso: Proceso): void {
         const existe =this._procesos.some(procesoExistente =>procesoExistente.pid === proceso.pid);
