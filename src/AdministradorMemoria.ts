@@ -25,6 +25,10 @@ export class AdministradorMemoria implements IAdministradorMemoria{
         return [...this._bloques];
     }
 
+    set memoriaTotal(valor: number) { this._memoriaTotal = valor; }
+
+    set bloques(valor: BloqueMemoria[]) { this._bloques = valor; }
+
     asignar(pid: string, tamano: number): boolean { //toma el proceso y la cantidad de memoria que va a usar
         //busca un bloque libre lo suficientemente grande 
         // y se lo asigna al proceso
