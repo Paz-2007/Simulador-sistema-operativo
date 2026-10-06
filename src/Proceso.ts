@@ -79,18 +79,35 @@ export class Proceso implements IProceso {
         return this._duracionBloqueo;
     }
 
-    set pid(valor: string) { 
-       this._pid = valor; }
+set pid(valor: string) { 
+    this._pid = valor; }
 
-   set tamanoMemoria(valor: number) { 
-     this._tamanoMemoria = valor; }
+set tamanoMemoria(valor: number) { 
+    this._tamanoMemoria = valor; }
 
-  set tiempoCpuTotal(valor: number) {
-     this._tiempoCpuTotal = valor; }
+set tiempoCpuTotal(valor: number) {
+    this._tiempoCpuTotal = valor; }
 
- set tiempoCpuRestante(valor: number) { 
-     this._tiempoCpuRestante = valor; }
+set tiempoCpuRestante(valor: number) { 
+    this._tiempoCpuRestante = valor; }
 
+   set estado(valor: string) { 
+    this._estado = valor; }
+
+set quantumConsumido(valor: number) {
+    this._quantumConsumido = valor; }
+
+set tiempoBloqueoRestante(valor: number) { 
+    this._tiempoBloqueoRestante = valor; }
+
+set ticksCpuConsumidos(valor: number) { 
+    this._ticksCpuConsumidos = valor; }
+
+set ticksParaBloqueo(valor: number) {
+    this._ticksParaBloqueo = valor; }
+
+set duracionBloqueo(valor: number) { 
+    this._duracionBloqueo = valor; }
 
 
     cambiarEstado(nuevoEstado:string): void{
