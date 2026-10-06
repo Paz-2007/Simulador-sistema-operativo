@@ -31,6 +31,13 @@ export class BloqueMemoria implements IBloqueMemoria {
         return this._pid;
     }
 
+    set inicio(valor: number) { this._inicio = valor; }
+
+    set tamano(valor: number) { this._tamano = valor; }
+
+    set libre(valor: boolean) { this._libre = valor; }
+
+    set pid(valor: string | null) { this._pid = valor; }
 
     ocupar(pid:string): void{
         if (!this._libre){
