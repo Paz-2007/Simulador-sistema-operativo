@@ -79,6 +79,18 @@ export class Proceso implements IProceso {
         return this._duracionBloqueo;
     }
 
+    set pid(valor: string) { 
+       this._pid = valor; }
+
+   set tamanoMemoria(valor: number) { 
+     this._tamanoMemoria = valor; }
+
+  set tiempoCpuTotal(valor: number) {
+     this._tiempoCpuTotal = valor; }
+
+ set tiempoCpuRestante(valor: number) { 
+     this._tiempoCpuRestante = valor; }
+
 
 
     cambiarEstado(nuevoEstado:string): void{

@@ -28,7 +28,7 @@ export class AdministradorMemoria implements IAdministradorMemoria{
     asignar(pid: string, tamano: number): boolean { //toma el proceso y la cantidad de memoria que va a usar
         //busca un bloque libre lo suficientemente grande 
         // y se lo asigna al proceso
-         //permite implemetar first fit con particion de bloque
+         //permite implemetar first fit
         const indice = this._bloques.findIndex(bloque => bloque.libre && bloque.tamano >= tamano);
         //busca el primer bloque libre que tebga tamano suficiente
 
